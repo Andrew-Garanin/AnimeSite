@@ -1,17 +1,21 @@
-import React from 'react';
+import { Box } from "@mui/system";
+import { constants, kMaxLength } from "buffer";
+import { EWOULDBLOCK, O_DIRECT } from "constants";
+import React, { useState } from "react";
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { convertTypeAcquisitionFromJson, isParameter, ListFormat } from "typescript";
+import { threadId } from "worker_threads";
+import { Body } from "./components/body";
+import { Head } from "./components/header";
+import './index.css';   
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <>
+    <Head/>
+    <Box className = "body_style">
+        <Body className = "cartochka"/>
+    </Box>
+    </>,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
