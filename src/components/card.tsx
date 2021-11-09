@@ -6,42 +6,83 @@ import Typography from '@mui/material/Typography';
 
 
 import { SimpleDialogDemo } from "./dialog";
-import { CardMedia, Grid } from '@mui/material';
+import { CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
-export const MyCard=() => {
+import LinkIcon from '@mui/icons-material/Link';
+
+
+export const MyCard = ({ id, image_reference, title, text, src_reference, refe }:
+  { id: number, image_reference: string, title: string, text: string, src_reference: string, refe: string }) => {
   const color1 = "#757F9A";
   const color2 = "#D7DDE8";
-  return(
-  <Card style={{background: `linear-gradient(to right,  ${color1} 0%,${color2} 100%)`}}>
-    <Grid container
-      direction="row"
-      justifyContent="center"
-      alignItems="flex-start" >
+  const section = {
+    height: "100%",
+  };
 
-      <Grid item md={6}>
-        <CardContent>
-            <CardMedia 
-                className = "prev_image"
+  const new_string = src_reference.substring(8, src_reference.indexOf("/", 8))
+
+  return (
+    <Card id={id.toString()} className='card' style={{ background: `linear-gradient(to right,  ${color1} 0%,${color2} 100%)` }} sx={{ boxShadow: 4 }}>
+      <Grid container
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start">
+
+        <Grid item md={6}>
+          <CardContent sx={{ height: '100%' }} style={{ padding: 0 }}>
+            <CardActionArea>
+              <CardMedia
+                className="prev_image"
                 component="img"
                 height="200"
-                image="https://i.pinimg.com/564x/6d/57/7d/6d577d38bae09e0daa201d52b795aa95.jpg"
+                image={image_reference}
                 alt="Paella dish"
-            />
-        </CardContent>
-      </Grid>
+              />
+            </CardActionArea>
+          </CardContent>
+        </Grid>
 
-      <Grid item md={6}>
-        <Typography variant="body2" paddingTop="14px">
-            凪白みと🖖 on Twitter.
-        </Typography>
+        <Grid item md={6}>
 
-        <CardActions>
-          <SimpleDialogDemo />
-        </CardActions>
+          <Grid container
+            direction="column"
+            px={1}
+            spacing={2}
+            style={section}
+          >
+
+            <Grid item >
+              <Typography height="5rem" variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
+                {title}
+              </Typography>
+            </Grid>
+
+            <Grid item display="flex" alignItems="center" paddingLeft="100px">
+
+              <Chip label={new_string}
+                icon={<LinkIcon />}
+                //sx={{ backgroundColor: 'red' }}
+                onClick={() => window.open(src_reference, "_blank")}
+              />
+
+            </Grid>
+
+            <Grid item paddingLeft={2}>
+              <SimpleDialogDemo
+                image_reference={image_reference}
+                title={title}
+                text={text}
+                src_reference={src_reference}
+              />
+
+            </Grid>
+
+          </Grid>
+
+        </Grid>
       </Grid>
-    </Grid>
-  </Card>
-);
+    </Card>
+  );
 }
 

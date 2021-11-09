@@ -1,92 +1,84 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import { blue } from '@mui/material/colors';
+import { CardMedia, DialogContent, Grid } from '@mui/material';
 
-
-const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 export interface SimpleDialogProps {
   open: boolean;
-  selectedValue: string;
-  onClose: (value: string) => void;
+  onClose: () => void;
+  image_reference: string;
+  title: string;
+  text: string;
+  src_reference: string;
 }
 
 const SimpleDialog = (props: SimpleDialogProps) => {
-  const { onClose, selectedValue, open } = props;
+  const { onClose, open, image_reference, title, text, src_reference } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose();
   };
 
-  const handleListItemClick = (value: string) => {
-    onClose(value);
+  const handleListItemClick = () => {
+    onClose();
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Нюхай беброчку</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {emails.map((email) => (
-          <ListItem button onClick={() => handleListItemClick(email)} key={email}>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+    <Dialog onClose={handleClose} open={open} fullWidth
+      maxWidth="md">
+      <Grid container
+        direction="row"
 
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={email} />
-          </ListItem>
-        ))}
-        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
-          <ListItemAvatar>
-            <Avatar>
+        alignItems="flex-start">
 
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Add account" />
-        </ListItem>
-      </List>
+        <Grid item md={6} >
+          <DialogContent style={{ height: '600px', padding: 0 }}>
+            <CardMedia
+              className="prev_image"
+              component="img"
+              height='100%'
+              image={image_reference}
+              alt="Paella dish"
+            />
+  
+            <Typography variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
+              {title}
+            </Typography>
+
+          </DialogContent>
+        </Grid>
+
+      </Grid>
     </Dialog>
   );
 }
 
-export const SimpleDialogDemo = () => {
+export const SimpleDialogDemo = ({ image_reference, title, text, src_reference }: { image_reference: string,title: string,text: string,src_reference: string }) => {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(emails[1]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: string) => {
+  const handleClose = () => {
     setOpen(false);
-    setSelectedValue(value);
   };
 
   return (
-    <Box>
-      <Typography variant="subtitle1" component="div">
-        Selected: {selectedValue}
-      </Typography>
-      <br />
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open simple dialog
+    <Box display="flex" justifyContent="center">
+      <Button className="info_button" variant="outlined" onClick={handleClickOpen} size='medium' sx={{width: "95%",  color:"#ff88eb", border: '2px solid #ff88eb'}}>
+        More
       </Button>
       <SimpleDialog
-        selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
+        image_reference={image_reference}
+        title={title}
+        text={text}
+        src_reference={src_reference}
       />
     </Box>
   );
