@@ -6,15 +6,15 @@ import Typography from '@mui/material/Typography';
 
 
 import { SimpleDialogDemo } from "./dialog";
-import { Box, CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
+import { Box, CardActionArea, CardMedia, Chip, Grid, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
 import { color } from '@mui/system';
 
-export const MyCard = ({ id, image_reference, title, text, src_reference, refe }:
-  { id: number, image_reference: string, title: string, text: string, src_reference: string, refe: string }) => {
+export const MyCard = ({ id, image_reference, title, text, src_reference, refe, onClick }:
+  { id: number, image_reference: string, title: string, text: string, src_reference: string, refe: string, onClick: () => void }) => {
   const color2 = "#fbc2eb";
   const color1 = "#a6c1ee";
   const section = {
@@ -62,9 +62,12 @@ export const MyCard = ({ id, image_reference, title, text, src_reference, refe }
               <Typography height="5rem" variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
                 {title}
               </Typography>
-                <Box justifySelf="end">   
-                  <DeleteForeverIcon style={style} onClick={() => { console.log("Я мусор!") }} sx={{ paddingTop: 0.5, paddingLeft: 0, color: '#453a94'}}></DeleteForeverIcon>
-                </Box>
+
+              <Box>
+                <IconButton aria-label="delete"  style={style} onClick={onClick} sx={{ color: '#453a94', marginTop: "5px", width: "40px", height: "40px"}}>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </Box>
             </Grid>
 
             <Grid item display="flex" alignItems="center">
