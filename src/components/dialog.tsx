@@ -69,7 +69,7 @@ export const SimpleDialogDemo = ({ image_reference, title, text, src_reference }
 
   return (
     <Box display="flex" justifyContent="center">
-      <Button className="info_button" variant="outlined" onClick={handleClickOpen} size='medium' sx={{width: "95%",  color:"#ff88eb", border: '2px solid #ff88eb'}}>
+      <Button className="info_button" variant="outlined" onClick={handleClickOpen} size='medium' sx={{width: "95%",  color:"#d57eeb", border: '2px solid #d57eeb'}}>
         More
       </Button>
       <SimpleDialog

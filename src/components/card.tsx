@@ -6,24 +6,30 @@ import Typography from '@mui/material/Typography';
 
 
 import { SimpleDialogDemo } from "./dialog";
-import { CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
+import { Box, CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import LinkIcon from '@mui/icons-material/Link';
-
+import { useState } from 'react';
+import { color } from '@mui/system';
 
 export const MyCard = ({ id, image_reference, title, text, src_reference, refe }:
   { id: number, image_reference: string, title: string, text: string, src_reference: string, refe: string }) => {
-  const color1 = "#757F9A";
-  const color2 = "#D7DDE8";
+  const color2 = "#fbc2eb";
+  const color1 = "#a6c1ee";
   const section = {
     height: "100%",
   };
-
+  const [style, setStyle] = useState({ display: 'none' });
   const new_string = src_reference.substring(8, src_reference.indexOf("/", 8))
-
   return (
-    <Card id={id.toString()} className='card' style={{ background: `linear-gradient(to right,  ${color1} 0%,${color2} 100%)` }} sx={{ boxShadow: 4 }}>
+    <Card id={id.toString()} className='card' style={{ background: `linear-gradient(to bottom,  ${color1} 0%,${color2} 100%)` }} sx={{ boxShadow: 4 }}
+      onMouseEnter={e => {
+        setStyle({ display: 'block' });
+      }}
+      onMouseLeave={e => {
+        setStyle({ display: 'none' })
+      }}>
       <Grid container
         direction="row"
         justifyContent="center"
@@ -48,17 +54,20 @@ export const MyCard = ({ id, image_reference, title, text, src_reference, refe }
           <Grid container
             direction="column"
             px={1}
-            spacing={2}
+            spacing={1.7}
             style={section}
           >
 
-            <Grid item >
+            <Grid item display="flex" direction='row' justifyContent='space-between'>
               <Typography height="5rem" variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
                 {title}
               </Typography>
+                <Box justifySelf="end">   
+                  <DeleteForeverIcon style={style} onClick={() => { console.log("Я мусор!") }} sx={{ paddingTop: 0.5, paddingLeft: 0, color: '#453a94'}}></DeleteForeverIcon>
+                </Box>
             </Grid>
 
-            <Grid item display="flex" alignItems="center" paddingLeft="100px">
+            <Grid item display="flex" alignItems="center">
 
               <Chip label={new_string}
                 icon={<LinkIcon />}
