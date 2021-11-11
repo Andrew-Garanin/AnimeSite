@@ -1,18 +1,24 @@
 import { Grid } from '@mui/material';
 import { MyCard } from "./card";
-
+import { useEffect, useState } from 'react';
 import data from '../data/cards.json';
-import { SyntheticEvent, useEffect, useState } from 'react';
-import fs from 'fs'
-import path from 'path'
-export const Body = () => {
 
+
+export const Body = () => {
   const [cards, setCards] = useState(data.cards)
+
+  useEffect(() => {
+    fetch('http://localhost:3000/cards').then(res => {
+      return res.json();
+    }).then(data => {
+      setCards(data)
+    });
+  }, []);
 
   const Cards = () => {
     return (cards.map((card, i) => {
       return (
-        <Grid key={i} item xs={4}>
+        <Grid key={i} item md={4} xs={12} >
           <MyCard
             id={card.id}
             image_reference={card.image_reference}
@@ -28,13 +34,7 @@ export const Body = () => {
     )
     )
   }
-  let student = { 
-    name: 'Mike',
-    age: 23, 
-    gender: 'Male',
-    department: 'English',
-    car: 'Honda' 
-};
+
   const handleRemoveItem = (id: number) => {
     setCards(cards.filter((card) => card.id != id));
   };
@@ -45,7 +45,8 @@ export const Body = () => {
       justifyContent="center"
       alignItems="flex-start"
       paddingTop="20px"
-      paddingBottom="20px">
+      paddingBottom="20px"
+      px={2}>
 
       <Grid item md={8} xs={12}>
         <Grid container spacing={2}>
