@@ -38,6 +38,9 @@ export const MyCard = (props: MyCardProps) => {
       }}
       onMouseLeave={e => {
         setDeleteButtonDisplay({ display: 'none' })
+      }}
+      onMouseOver={e=>{
+        setDeleteButtonDisplay({ display: 'block' });
       }}>
       <Grid container
         direction="row"
