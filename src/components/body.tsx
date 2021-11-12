@@ -49,11 +49,14 @@ export const Body = () => {
               refe={card.refe}
               onClick={() => handleRemoveItem(card.id)}
             />
-            <AlertDialog/>
           </Grid>
         ))}
       </Grid>
     );
+  }
+
+  const removeItem=(id:number) =>{
+    
   }
 
   const handleRemoveItem = (id: number) => {

@@ -6,6 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
 import { MoreButtonDialog } from "./dialog";
+import { AlertDialog } from './deleteItemConfirmation';
 
 
 export interface MyCardProps {
@@ -42,6 +43,7 @@ export const MyCard = (props: MyCardProps) => {
       onMouseOver={e=>{
         setDeleteButtonDisplay({ display: 'block' });
       }}>
+
       <Grid container
         direction="row"
         flexWrap="nowrap">
@@ -78,13 +80,16 @@ export const MyCard = (props: MyCardProps) => {
                 {title}
               </Typography>
               <Box>
-                <IconButton
+                {/* <IconButton
                   aria-label="delete"
                   style={deleteButtonDisplay}
                   sx={{ color: '#453a94', marginTop: "5px", width: "40px", height: "40px" }}
                   onClick={onClick}>
                   <DeleteForeverIcon />
-                </IconButton>
+                </IconButton> */}
+                <AlertDialog
+                deleteButtonDisplay={deleteButtonDisplay}
+                onClick={onClick}/>
               </Box>
             </Grid>
 
