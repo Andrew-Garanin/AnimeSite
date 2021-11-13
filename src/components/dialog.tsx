@@ -13,14 +13,15 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+
+
 export interface MoreDialogProps {
   open: boolean;
-  onClose: () => void;
   image_reference: string;
   title: string;
   text: string;
   src_reference: string;
+  onClose: () => void;
 }
 
 const MoreDialog = (props: MoreDialogProps) => {
@@ -32,7 +33,7 @@ const MoreDialog = (props: MoreDialogProps) => {
   };
 
   const editButton = () => {
-    if (mode == 'view')
+    if (mode === 'view')
       setMode("edit")
     else
       setMode('view')
@@ -45,9 +46,8 @@ const MoreDialog = (props: MoreDialogProps) => {
       open={open}
       maxWidth="md">
 
-      <Grid
+      <Grid container
         className="dialog"
-        container
         direction="row"
         flexWrap="nowrap">
 
@@ -62,94 +62,94 @@ const MoreDialog = (props: MoreDialogProps) => {
           </DialogContent>
         </Grid>
 
-
         <Grid item md={6} xs={8}>
           <DialogContent style={{ height: '80vh', padding: 0 }}>
-          <Box overflow='auto' height="100%" className='section'>
-            <Grid container
-              direction='column'
-              px={1}
-              spacing={3}
-              height="100%"
-              padding='1vw'
-              wrap="nowrap"
-              >
-            
-              <Grid item>
-                <Button variant="contained"><DownloadIcon /> Save image...</Button>
-                <Button onClick={editButton} variant="contained"><ModeEditOutlineIcon /> Edit mode...</Button>
-              </Grid>
+            <Box overflow='auto' height="100%" className='section'>
+              <Grid container
+                direction='column'
+                px={1}
+                spacing={3}
+                height="100%"
+                padding='1vw'
+                wrap="nowrap">
 
-              <Grid item>
-                <Grid container direction='column'>
+                <Grid item>
+                  <Button variant="contained"><DownloadIcon /> Save image...</Button>
+                  <Button onClick={editButton} variant="contained"><ModeEditOutlineIcon /> Edit mode...</Button>
+                </Grid>
 
-                  <Grid item>
-                    <LinkIcon />
+                <Grid item>
+                  <Grid container direction='column'>
+
+                    <Grid item>
+                      <LinkIcon />
+                    </Grid>
+
+                    <Grid item>
+                      <a href={src_reference}>{src_reference}</a>
+                      {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <ModeEditOutlineIcon />
+                          </InputAdornment>
+                        ),
+                      }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                    </Grid>
+
                   </Grid>
+                </Grid>
 
-                  <Grid item>
-                    <a href={src_reference}>{src_reference}</a>
-                    {mode == 'edit' && <TextField multiline rows={3} InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <ModeEditOutlineIcon />
-                        </InputAdornment>
-                      ),
-                    }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                <Grid item>
+                  <Grid container
+                    direction='column'>
+
+                    <Grid item>
+                      <PushPinIcon />
+                    </Grid>
+
+                    <Grid item>
+                      <Typography variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
+                        {title}
+                      </Typography>
+                      {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <ModeEditOutlineIcon />
+                          </InputAdornment>
+                        ),
+                      }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                    </Grid>
+
                   </Grid>
+                </Grid>
+
+                <Grid item>
+                  <AutoStoriesIcon />
+                  <Typography>
+                    {text}
+                  </Typography>
+                  {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ModeEditOutlineIcon />
+                      </InputAdornment>
+                    ),
+                  }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                </Grid>
+
+                <Grid item
+                  direction="row">
+
+                  <FacebookIcon />
+                  <WhatsAppIcon />
+                  <TelegramIcon />
+                  <PinterestIcon />
 
                 </Grid>
               </Grid>
-
-              <Grid item>
-                <Grid container direction='column'>
-
-                  <Grid item>
-                    <PushPinIcon />
-                  </Grid>
-
-                  <Grid item>
-                    <Typography variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
-                      {title}
-                    </Typography>
-                    {mode == 'edit' && <TextField multiline rows={3} InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <ModeEditOutlineIcon />
-                        </InputAdornment>
-                      ),
-                    }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
-                  </Grid>
-
-                </Grid>
-              </Grid>
-
-              <Grid item>
-                <AutoStoriesIcon />
-                <Typography>
-                  {text}
-                </Typography>
-                {mode == 'edit' && <TextField multiline rows={3} InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <ModeEditOutlineIcon />
-                    </InputAdornment>
-                  ),
-                }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
-              </Grid>
-
-              <Grid item direction="row">
-                <FacebookIcon />
-                <WhatsAppIcon />
-                <TelegramIcon />
-                <PinterestIcon />
-              </Grid>
-              
-            </Grid>
             </Box>
           </DialogContent>
         </Grid>
-
       </Grid >
     </Dialog >
   );
@@ -182,7 +182,6 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
         size='medium'
         sx={{ width: "95%", color: "#d57eeb", border: '2px solid #d57eeb' }}
         onClick={handleClickOpen}>
-
         More
       </Button>
 

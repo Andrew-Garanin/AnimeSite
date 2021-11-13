@@ -1,8 +1,7 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, CardMedia, Chip, Grid, IconButton } from '@mui/material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Box, CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
 import { MoreButtonDialog } from "./dialog";
@@ -40,7 +39,7 @@ export const MyCard = (props: MyCardProps) => {
       onMouseLeave={e => {
         setDeleteButtonDisplay({ display: 'none' })
       }}
-      onMouseOver={e=>{
+      onMouseOver={e => {
         setDeleteButtonDisplay({ display: 'block' });
       }}>
 
@@ -72,24 +71,17 @@ export const MyCard = (props: MyCardProps) => {
             height="100%"
             wrap="nowrap">
 
-            <Grid
-              item display="flex"
+            <Grid item
+              display="flex"
               direction='row'
               justifyContent='space-between'>
               <Typography className="main_card_text" height="5rem" variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" >
                 {title}
               </Typography>
               <Box>
-                {/* <IconButton
-                  aria-label="delete"
-                  style={deleteButtonDisplay}
-                  sx={{ color: '#453a94', marginTop: "5px", width: "40px", height: "40px" }}
-                  onClick={onClick}>
-                  <DeleteForeverIcon />
-                </IconButton> */}
-                <AlertDialog
-                deleteButtonDisplay={deleteButtonDisplay}
-                onClick={onClick}/>
+                <AlertDialog //Delete button is here!
+                  deleteButtonDisplay={deleteButtonDisplay}
+                  onClick={onClick} />
               </Box>
             </Grid>
 
@@ -114,4 +106,3 @@ export const MyCard = (props: MyCardProps) => {
     </Card>
   );
 }
-

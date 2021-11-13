@@ -1,25 +1,7 @@
 import { Grid } from '@mui/material';
-import { MyCard, MyCardProps } from "./card";
 import { useEffect, useState } from 'react';
-import { AlertDialog } from './deleteItemConfirmation';
-//import { Cards } from "./cardList";
+import { MyCard, MyCardProps } from "./card";
 
-// class Card{
-//   id: number;
-//   image_reference: string;
-//   title: string;
-//   text: string;
-//   src_reference: string;
-//   refe: string;
-//   constructor( id: number,image_reference: string,title: string,text: string,src_reference: string,refe: string) {
-//     this.id = id;
-//     this.image_reference = image_reference;
-//     this.title = title;
-//     this.text = text;
-//     this.src_reference = src_reference;
-//     this.refe = refe;
-//   }
-// }
 
 export const Body = () => {
   const [cards, setCards] = useState<MyCardProps[] | null>(null)
@@ -55,12 +37,7 @@ export const Body = () => {
     );
   }
 
-  const removeItem=(id:number) =>{
-    
-  }
-
   const handleRemoveItem = (id: number) => {
-    console.log(id)
     fetch(`http://localhost:3000/cards/${id}`, { method: 'DELETE' }).then(async response => {
       const data = await response.json();
 
@@ -71,11 +48,10 @@ export const Body = () => {
         return Promise.reject(error);
       }
       else {
-        setCards(cards!.filter((card) => card.id != id));
+        setCards(cards!.filter((card) => card.id !== id));
       }
     })
       .catch(error => {
-
         console.error('There was an error!', error);
       });
 
@@ -93,6 +69,7 @@ export const Body = () => {
       <Grid item md={8} xs={12}>
         {cards && <Cards />}
       </Grid>
+
     </Grid>
   );
 }

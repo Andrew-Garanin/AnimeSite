@@ -9,7 +9,7 @@ import { Box } from '@mui/system';
 import { IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-export const AlertDialog = ({deleteButtonDisplay,onClick}:{deleteButtonDisplay: {display:string},onClick: () => void}) => {
+export const AlertDialog = ({deleteButtonDisplay, onClick}:{deleteButtonDisplay: {display:string}, onClick: () => void}) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -22,9 +22,6 @@ export const AlertDialog = ({deleteButtonDisplay,onClick}:{deleteButtonDisplay: 
 
   return (
     <Box>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
       <IconButton
         aria-label="delete"
         style={deleteButtonDisplay}
@@ -36,8 +33,8 @@ export const AlertDialog = ({deleteButtonDisplay,onClick}:{deleteButtonDisplay: 
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+        aria-describedby="alert-dialog-description">
+          
         <DialogTitle id="alert-dialog-title">
           {"Delete this card?"}
         </DialogTitle>
