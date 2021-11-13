@@ -14,7 +14,7 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DoneIcon from '@mui/icons-material/Done';
-
+import { useState, useRef } from 'react';
 
 export interface MoreDialogProps {
   open: boolean;
@@ -24,33 +24,49 @@ export interface MoreDialogProps {
   src_reference: string;
   onClose: () => void;
   id: number;
-  getCards: () => void;
 }
 
 const MoreDialog = (props: MoreDialogProps) => {
-  const { open, image_reference, title, text, src_reference, onClose, id, getCards } = props;
-  const [mode, setMode] = React.useState("view")
+  const { open, image_reference, title, text, src_reference, onClose, id } = props;
+  const [mode, setMode] = useState("view")
 
-  const myRef = React.useRef<HTMLInputElement>(null)
+  // Refs
+  const srcReferenceContentRef = useRef<HTMLInputElement>(null)
+  const titleContentRef = useRef<HTMLInputElement>(null)
+  const textContentRef = useRef<HTMLInputElement>(null)
+  const imageReferenceContentRef = useRef<HTMLInputElement>(null)
 
-  const [contentReference, setContentReference] = React.useState(src_reference)
-  const [currentValue, setCurrentValue] =React.useState(src_reference)
+  // For editing
+  const [srcReferenceEditingValue, setSrcReferenceEditingValue] = useState(src_reference)
+  const [titleEditingValue, setTitleEditingValue] = useState(title)
+  const [textEditingValue, setTextEditingValue] = useState(text)
+  const [imageReferenceEditingValue, setImageReferenceEditingValue] = useState(image_reference)
+
+  // For current values
+  const [srcReferenceCurrentValue, setSrcReferenceCurrentValue] = useState(src_reference)
+  const [titleCurrentValue, setTitleCurrentValue] = useState(title)
+  const [textCurrentValue, setTextCurrentValue] = useState(text)
+  const [imageReferenceCurrentValue, setImageReferenceCurrentValue] = useState(image_reference)
 
   const handleUpdateItem = (id: number) => {
     const requestOptions = {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ src_reference: contentReference })
+      body: JSON.stringify({
+        src_reference: srcReferenceEditingValue,
+        title: titleEditingValue,
+        text: textEditingValue
+      })
     };
 
     fetch(`http://localhost:3000/cards/${id}`, requestOptions).then(response => response.json())
-      .then(data => (setCurrentValue(data.src_reference)));
+      .then(data => {
+        setSrcReferenceCurrentValue(data.src_reference);
+        setTitleCurrentValue(data.title);
+        setTextCurrentValue(data.text);
+        //setImageReferenceCurrentValue(data.image_reference);
+      });
   }
-
-  const handleClose = () => {
-
-    onClose();
-  };
 
   const editButton = () => {
     if (mode === 'view')
@@ -110,14 +126,15 @@ const MoreDialog = (props: MoreDialogProps) => {
                     </Grid>
 
                     <Grid item>
-                      <a href={currentValue}>{currentValue}</a>
-                      {mode === 'edit' && <TextField ref={myRef} label="Helper text" multiline rows={3} InputProps={{
+                      <a href={srcReferenceCurrentValue}>{srcReferenceCurrentValue}</a>
+
+                      {mode === 'edit' && <TextField ref={srcReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
                             <ModeEditOutlineIcon />
                           </InputAdornment>
                         ),
-                      }} size='small' sx={{ width: '100%' }} type='text' defaultValue={currentValue} onChange={(value) => { setContentReference(value.currentTarget.value) }}></TextField>}
+                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={srcReferenceCurrentValue} onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}></TextField>}
                     </Grid>
 
                   </Grid>
@@ -133,15 +150,15 @@ const MoreDialog = (props: MoreDialogProps) => {
 
                     <Grid item>
                       <Typography variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
-                        {title}
+                        {titleCurrentValue}
                       </Typography>
-                      {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                      {mode === 'edit' && <TextField ref={titleContentRef} label="Helper text" multiline rows={3} InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
                             <ModeEditOutlineIcon />
                           </InputAdornment>
                         ),
-                      }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={titleCurrentValue} onChange={(value) => { setTitleEditingValue(value.currentTarget.value) }}></TextField>}
                     </Grid>
 
                   </Grid>
@@ -150,20 +167,24 @@ const MoreDialog = (props: MoreDialogProps) => {
                 <Grid item>
                   <AutoStoriesIcon />
                   <Typography>
-                    {text}
+                    {textCurrentValue}
                   </Typography>
-                  {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                  {mode === 'edit' && <TextField ref={textContentRef} label="Helper text" multiline rows={3} InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
                         <ModeEditOutlineIcon />
                       </InputAdornment>
                     ),
-                  }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                  }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={textCurrentValue} onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}></TextField>}
                 </Grid>
 
                 <Grid item>
-                  <Button color='success' onClick={saveButton} variant="contained"><DoneIcon />Save</Button>
+
                 </Grid>
+
+                {mode === 'edit' && <Grid item>
+                  <Button color='success' onClick={saveButton} variant="contained"><DoneIcon />Save</Button>
+                </Grid>}
 
                 <Grid item
                   direction="row">
@@ -201,7 +222,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
   };
 
   const handleClose = () => {
-    // rerender background!
+    getCards()
     setOpen(false);
   };
 
@@ -223,8 +244,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
         image_reference={image_reference}
         title={title}
         text={text}
-        src_reference={src_reference}
-        getCards={getCards} />
+        src_reference={src_reference} />
     </Box>
   );
 }
