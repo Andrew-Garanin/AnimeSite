@@ -16,10 +16,11 @@ export interface MyCardProps {
   src_reference: string;
   refe: string;
   onClick: () => void;
+  getCards: () => void;
 }
 
 export const MyCard = (props: MyCardProps) => {
-  const { id, image_reference, title, text, src_reference, refe, onClick } = props;
+  const { id, image_reference, title, text, src_reference, refe, onClick, getCards } = props;
 
   const color2 = "#fbc2eb";
   const color1 = "#a6c1ee";
@@ -94,11 +95,13 @@ export const MyCard = (props: MyCardProps) => {
 
             <Grid item paddingLeft={2}>
               <MoreButtonDialog // More button is here!
+                id={id}
                 image_reference={image_reference}
                 title={title}
                 text={text}
-                src_reference={src_reference} />
-            </Grid>
+                src_reference={src_reference}
+                getCards={getCards} />
+            </Grid> 
 
           </Grid>
         </Grid>

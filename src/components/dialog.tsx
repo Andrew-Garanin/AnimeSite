@@ -13,6 +13,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import DoneIcon from '@mui/icons-material/Done';
 
 
 export interface MoreDialogProps {
@@ -22,13 +23,32 @@ export interface MoreDialogProps {
   text: string;
   src_reference: string;
   onClose: () => void;
+  id: number;
+  getCards: () => void;
 }
 
 const MoreDialog = (props: MoreDialogProps) => {
-  const { open, image_reference, title, text, src_reference, onClose } = props;
+  const { open, image_reference, title, text, src_reference, onClose, id, getCards } = props;
   const [mode, setMode] = React.useState("view")
 
+  const myRef = React.useRef<HTMLInputElement>(null)
+
+  const [contentReference, setContentReference] = React.useState(src_reference)
+  const [currentValue, setCurrentValue] =React.useState(src_reference)
+
+  const handleUpdateItem = (id: number) => {
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ src_reference: contentReference })
+    };
+
+    fetch(`http://localhost:3000/cards/${id}`, requestOptions).then(response => response.json())
+      .then(data => (setCurrentValue(data.src_reference)));
+  }
+
   const handleClose = () => {
+
     onClose();
   };
 
@@ -39,10 +59,14 @@ const MoreDialog = (props: MoreDialogProps) => {
       setMode('view')
   }
 
+  const saveButton = () => {
+    handleUpdateItem(id)
+  }
+
   return (
     <Dialog
       fullWidth
-      onClose={handleClose}
+      onClose={onClose}
       open={open}
       maxWidth="md">
 
@@ -86,14 +110,14 @@ const MoreDialog = (props: MoreDialogProps) => {
                     </Grid>
 
                     <Grid item>
-                      <a href={src_reference}>{src_reference}</a>
-                      {mode === 'edit' && <TextField multiline rows={3} InputProps={{
+                      <a href={currentValue}>{currentValue}</a>
+                      {mode === 'edit' && <TextField ref={myRef} label="Helper text" multiline rows={3} InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
                             <ModeEditOutlineIcon />
                           </InputAdornment>
                         ),
-                      }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
+                      }} size='small' sx={{ width: '100%' }} type='text' defaultValue={currentValue} onChange={(value) => { setContentReference(value.currentTarget.value) }}></TextField>}
                     </Grid>
 
                   </Grid>
@@ -137,6 +161,10 @@ const MoreDialog = (props: MoreDialogProps) => {
                   }} size='small' sx={{ width: '100%' }} type='text'></TextField>}
                 </Grid>
 
+                <Grid item>
+                  <Button color='success' onClick={saveButton} variant="contained"><DoneIcon />Save</Button>
+                </Grid>
+
                 <Grid item
                   direction="row">
 
@@ -160,10 +188,12 @@ export interface SimpleDialogDemoProps {
   title: string;
   text: string;
   src_reference: string;
+  id: number;
+  getCards: () => void;
 }
 
 export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
-  const { image_reference, title, text, src_reference } = props;
+  const { image_reference, title, text, src_reference, id, getCards } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -171,6 +201,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
   };
 
   const handleClose = () => {
+    // rerender background!
     setOpen(false);
   };
 
@@ -188,10 +219,12 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
       <MoreDialog
         open={open}
         onClose={handleClose}
+        id={id}
         image_reference={image_reference}
         title={title}
         text={text}
-        src_reference={src_reference} />
+        src_reference={src_reference}
+        getCards={getCards} />
     </Box>
   );
 }

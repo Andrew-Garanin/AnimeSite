@@ -30,6 +30,7 @@ export const Body = () => {
               src_reference={card.src_reference}
               refe={card.refe}
               onClick={() => handleRemoveItem(card.id)}
+              getCards={getCards}
             />
           </Grid>
         ))}
@@ -47,8 +48,8 @@ export const Body = () => {
         const error = (data && data.message) || response.status;
         return Promise.reject(error);
       }
-      else {
-        setCards(cards!.filter((card) => card.id !== id));
+      else { 
+        getCards()
       }
     })
       .catch(error => {
