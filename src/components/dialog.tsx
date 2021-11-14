@@ -13,6 +13,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DoneIcon from '@mui/icons-material/Done';
 import { useState, useRef } from 'react';
 
@@ -55,7 +57,8 @@ const MoreDialog = (props: MoreDialogProps) => {
       body: JSON.stringify({
         src_reference: srcReferenceEditingValue,
         title: titleEditingValue,
-        text: textEditingValue
+        text: textEditingValue,
+        image_reference: imageReferenceEditingValue
       })
     };
 
@@ -64,7 +67,7 @@ const MoreDialog = (props: MoreDialogProps) => {
         setSrcReferenceCurrentValue(data.src_reference);
         setTitleCurrentValue(data.title);
         setTextCurrentValue(data.text);
-        //setImageReferenceCurrentValue(data.image_reference);
+        setImageReferenceCurrentValue(data.image_reference);
       });
   }
 
@@ -78,6 +81,14 @@ const MoreDialog = (props: MoreDialogProps) => {
   const saveButton = () => {
     handleUpdateItem(id)
   }
+
+  const shortReference = srcReferenceCurrentValue.substring(8, srcReferenceCurrentValue.indexOf("/", 8))
+
+
+  const download = () => {
+    // Func for download image.
+  };
+
 
   return (
     <Dialog
@@ -97,7 +108,7 @@ const MoreDialog = (props: MoreDialogProps) => {
               className="prev_image"
               component="img"
               height='100%'
-              image={image_reference}
+              image={imageReferenceCurrentValue}
               alt="Anime picture" />
           </DialogContent>
         </Grid>
@@ -114,7 +125,7 @@ const MoreDialog = (props: MoreDialogProps) => {
                 wrap="nowrap">
 
                 <Grid item>
-                  <Button variant="contained"><DownloadIcon /> Save image...</Button>
+                  <Button variant="contained" onClick={() => { download() }}><DownloadIcon /> Save image...</Button>
                   <Button onClick={editButton} variant="contained"><ModeEditOutlineIcon /> Edit mode...</Button>
                 </Grid>
 
@@ -126,8 +137,7 @@ const MoreDialog = (props: MoreDialogProps) => {
                     </Grid>
 
                     <Grid item>
-                      <a href={srcReferenceCurrentValue}>{srcReferenceCurrentValue}</a>
-
+                      <a href={srcReferenceCurrentValue}>{shortReference}</a>
                       {mode === 'edit' && <TextField ref={srcReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -135,6 +145,32 @@ const MoreDialog = (props: MoreDialogProps) => {
                           </InputAdornment>
                         ),
                       }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={srcReferenceCurrentValue} onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}></TextField>}
+                    </Grid>
+
+                    <Grid item>
+                      <Grid container
+                        direction="row"
+                        justifyContent='end'
+                        paddingY="2vh"
+                        spacing='0vw'>
+
+                        <Grid item>
+                          <FacebookIcon onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
+                        </Grid>
+
+                        <Grid item>
+                          <WhatsAppIcon onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
+                        </Grid>
+
+                        <Grid item>
+                          <TelegramIcon onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
+                        </Grid>
+
+                        <Grid item>
+                          <TwitterIcon onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
+                        </Grid>
+
+                      </Grid>
                     </Grid>
 
                   </Grid>
@@ -149,7 +185,7 @@ const MoreDialog = (props: MoreDialogProps) => {
                     </Grid>
 
                     <Grid item>
-                      <Typography variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" className="main_card_text">
+                      <Typography variant="body2" className="main_card_text">
                         {titleCurrentValue}
                       </Typography>
                       {mode === 'edit' && <TextField ref={titleContentRef} label="Helper text" multiline rows={3} InputProps={{
@@ -179,22 +215,21 @@ const MoreDialog = (props: MoreDialogProps) => {
                 </Grid>
 
                 <Grid item>
-
+                  {mode === 'edit' && <AddAPhotoIcon />}
+                  {mode === 'edit' && <TextField ref={imageReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ModeEditOutlineIcon />
+                      </InputAdornment>
+                    ),
+                  }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={imageReferenceCurrentValue} onChange={(value) => { setImageReferenceEditingValue(value.currentTarget.value) }}></TextField>}
                 </Grid>
 
                 {mode === 'edit' && <Grid item>
                   <Button color='success' onClick={saveButton} variant="contained"><DoneIcon />Save</Button>
                 </Grid>}
 
-                <Grid item
-                  direction="row">
 
-                  <FacebookIcon />
-                  <WhatsAppIcon />
-                  <TelegramIcon />
-                  <PinterestIcon />
-
-                </Grid>
               </Grid>
             </Box>
           </DialogContent>
