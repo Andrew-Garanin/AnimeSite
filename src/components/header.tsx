@@ -2,6 +2,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import logo from "../assets/site-icon.png"
+import FormDialog from './addNewCardDialog';
 
 
 export const Head = () => {
@@ -47,7 +48,7 @@ export const Head = () => {
       },
     },
   }));
-
+  
   return (
     <header className="header">
       <img className="header_icon" src={logo} alt="header_icon" />
@@ -63,6 +64,8 @@ export const Head = () => {
           inputProps={{ 'aria-label': 'search' }} />
 
       </Search>
+
+     <FormDialog />// New card button is here!
     </header>
   );
 }
