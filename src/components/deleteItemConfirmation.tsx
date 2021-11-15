@@ -9,6 +9,7 @@ import { Box } from '@mui/system';
 import { IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+
 export const AlertDialog = ({deleteButtonDisplay, onClick}:{deleteButtonDisplay: {display:string}, onClick: () => void}) => {
   const [open, setOpen] = React.useState(false);
 

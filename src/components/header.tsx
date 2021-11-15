@@ -48,7 +48,7 @@ export const Head = () => {
       },
     },
   }));
-  
+
   return (
     <header className="header">
       <img className="header_icon" src={logo} alt="header_icon" />
@@ -65,7 +65,9 @@ export const Head = () => {
 
       </Search>
 
-     <FormDialog />// New card button is here!
+      <FormDialog  // New card button is here!
+      
+      />
     </header>
   );
 }
