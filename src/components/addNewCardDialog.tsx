@@ -10,9 +10,11 @@ import LinkIcon from '@mui/icons-material/Link';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Grid } from '@mui/material';
 import { useState } from 'react';
+import { MyCardProps } from './Main';
+import { api } from './Api';
 
 
-export default function FormDialog() {
+export default function FormDialog({ cards, setCards }: { cards: (MyCardProps[] | null), setCards: React.Dispatch<React.SetStateAction<MyCardProps[] | null>> }) {
     const [open, setOpen] = useState(false);
 
     // For editing
@@ -26,29 +28,17 @@ export default function FormDialog() {
     };
 
     const handleClose = () => {
-       
+
         setOpen(false);
     };
 
-    const submitData = () => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id: 13,
-                image_reference: imageReferenceEditingValue,
-                title: titleEditingValue,
-                text: textEditingValue,
-                src_reference: srcReferenceEditingValue,
-                refe: "google.com"
-            })
-        };
+    async function submitData() {
+        await api.addItem(13, imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
+        const data = await api.getCards();
+        setCards(data);
+        handleClose();
+    };
 
-        fetch(`http://localhost:3000/cards/`, requestOptions).then(response => response.json())
-            .then(data => {
-                handleClose();
-            });
-    }
 
     return (
         <div>

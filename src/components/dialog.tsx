@@ -16,7 +16,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DoneIcon from '@mui/icons-material/Done';
 import { useState, useRef } from 'react';
-
+import { api } from './Api';
 
 export interface MoreDialogProps {
   open: boolean;
@@ -50,25 +50,12 @@ const MoreDialog = (props: MoreDialogProps) => {
   const [textCurrentValue, setTextCurrentValue] = useState(text)
   const [imageReferenceCurrentValue, setImageReferenceCurrentValue] = useState(image_reference)
 
-  const handleUpdateItem = (id: number) => {
-    const requestOptions = {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        src_reference: srcReferenceEditingValue,
-        title: titleEditingValue,
-        text: textEditingValue,
-        image_reference: imageReferenceEditingValue
-      })
-    };
-
-    fetch(`http://localhost:3000/cards/${id}`, requestOptions).then(response => response.json())
-      .then(data => {
-        setSrcReferenceCurrentValue(data.src_reference);
-        setTitleCurrentValue(data.title);
-        setTextCurrentValue(data.text);
-        setImageReferenceCurrentValue(data.image_reference);
-      });
+  async function handleUpdateItem(id: number) {
+    const data = await api.updateItem(id, srcReferenceEditingValue, titleEditingValue, textEditingValue, imageReferenceEditingValue)
+    setSrcReferenceCurrentValue(data.src_reference);
+    setTitleCurrentValue(data.title);
+    setTextCurrentValue(data.text);
+    setImageReferenceCurrentValue(data.image_reference);
   }
 
   const editButton = () => {

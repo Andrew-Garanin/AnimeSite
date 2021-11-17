@@ -1,21 +1,24 @@
-import { Grid } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { MyCard, MyCardProps } from "./card";
+import { Button, Grid } from '@mui/material';
+import { useEffect } from 'react';
+import { api } from './Api';
+import { MyCard } from "./card";
+import { MyCardProps } from './Main';
 
+export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCards: React.Dispatch<React.SetStateAction<MyCardProps[] | null>> }) => {
 
-export const Body = () => {
-  const [cards, setCards] = useState<MyCardProps[] | null>(null)
-
-  function getCards() {
-    fetch('http://localhost:3000/cards').then(res => {
-      return res.json();
-    }).then(data => {
-      setCards(data)
-      console.log(data)
-    });
+  async function getCards() {
+    const data = await api.getCards()
+    setCards(data)
   }
 
-  useEffect(() => { getCards() }, []);
+  async function handleRemoveItem(id: number) {
+    await api.removeItem(id)
+    await getCards()
+  };
+
+  useEffect(() => {
+    getCards();
+  }, []);
 
   const Cards = () => {
     return (
@@ -38,26 +41,6 @@ export const Body = () => {
     );
   }
 
-  const handleRemoveItem = (id: number) => {
-    fetch(`http://localhost:3000/cards/${id}`, { method: 'DELETE' }).then(async response => {
-      const data = await response.json();
-
-      // check for error response
-      if (!response.ok) {
-        // get error message from body or default to response status
-        const error = (data && data.message) || response.status;
-        return Promise.reject(error);
-      }
-      else { 
-        getCards()
-      }
-    })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
-
-  };
-
   return (
     <Grid container
       direction="row"
@@ -70,7 +53,7 @@ export const Body = () => {
       <Grid item md={8} xs={12}>
         {cards && <Cards />}
       </Grid>
-
+      
     </Grid>
   );
 }

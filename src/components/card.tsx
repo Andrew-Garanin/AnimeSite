@@ -6,18 +6,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
 import { MoreButtonDialog } from "./dialog";
 import { AlertDialog } from './deleteItemConfirmation';
-
-
-export interface MyCardProps {
-  id: number;
-  image_reference: string;
-  title: string;
-  text: string;
-  src_reference: string;
-  refe: string;
-  onClick: () => void;
-  getCards: () => void;
-}
+import { MyCardProps } from './Main';
 
 export const MyCard = (props: MyCardProps) => {
   const { id, image_reference, title, text, src_reference, refe, onClick, getCards } = props;
