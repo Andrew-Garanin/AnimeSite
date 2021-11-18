@@ -9,7 +9,7 @@ import { AlertDialog } from './deleteItemConfirmation';
 import { MyCardProps } from './Main';
 
 export const MyCard = (props: MyCardProps) => {
-  const { id, image_reference, title, text, src_reference, refe, onClick, getCards } = props;
+  const { id, image_reference, title, text, src_reference, onClick, getCards } = props;
 
   const color2 = "#fbc2eb";
   const color1 = "#a6c1ee";

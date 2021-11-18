@@ -10,7 +10,6 @@ export interface MyCardProps {
     title: string;
     text: string;
     src_reference: string;
-    refe: string;
     onClick: () => void;
     getCards: () => void;
 }

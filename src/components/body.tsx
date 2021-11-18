@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useEffect } from 'react';
 import { api } from './Api';
 import { MyCard } from "./card";
@@ -31,7 +31,6 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
               title={card.title}
               text={card.text}
               src_reference={card.src_reference}
-              refe={card.refe}
               onClick={() => handleRemoveItem(card.id)}
               getCards={getCards}
             />

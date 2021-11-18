@@ -23,17 +23,23 @@ export default function FormDialog({ cards, setCards }: { cards: (MyCardProps[] 
     const [textEditingValue, setTextEditingValue] = useState('')
     const [imageReferenceEditingValue, setImageReferenceEditingValue] = useState('')
 
+    function newID() {
+        var ids: number[] = []
+        cards!.map((card) => (ids.push(card.id)))
+        return Math.max.apply(null, ids)+1;
+    }
+
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
-
+        console.log(newID())
         setOpen(false);
     };
 
     async function submitData() {
-        await api.addItem(13, imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
+        await api.addItem(newID(), imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
         const data = await api.getCards();
         setCards(data);
         handleClose();

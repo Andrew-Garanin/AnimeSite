@@ -74,8 +74,10 @@ const MoreDialog = (props: MoreDialogProps) => {
 
   const download = () => {
     // Func for download image.
+  
   };
 
+  
 
   return (
     <Dialog

@@ -5,7 +5,6 @@ interface CardProps {
     title: string;
     text: string;
     src_reference: string;
-    refe: string;
 }
 
 class Api {
@@ -54,8 +53,7 @@ class Api {
                 image_reference: src_reference,
                 title: title,
                 text: text,
-                src_reference: image_reference,
-                refe: "google.com"
+                src_reference: image_reference
             })
         };
 
