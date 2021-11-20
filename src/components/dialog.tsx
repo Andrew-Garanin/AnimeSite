@@ -17,6 +17,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DoneIcon from '@mui/icons-material/Done';
 import { useState, useRef } from 'react';
 import { api } from './Api';
+import { saveAs } from 'file-saver'
 
 export interface MoreDialogProps {
   open: boolean;
@@ -74,7 +75,7 @@ const MoreDialog = (props: MoreDialogProps) => {
 
   const download = () => {
     // Func for download image.
-  
+    saveAs(imageReferenceCurrentValue, "image.jpg");
   };
 
   

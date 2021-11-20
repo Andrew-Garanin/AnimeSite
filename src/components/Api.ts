@@ -1,15 +1,13 @@
 
-interface CardProps {
-    id: number;
-    image_reference: string;
-    title: string;
-    text: string;
-    src_reference: string;
-}
-
 class Api {
-    getCards = async () => {
+    getCardsNumber = async () => {
         const response = await fetch('http://localhost:3000/cards');
+        let a =  await response.json()
+        return a.length;
+    }
+
+    getCards = async (start:number, end:number) => {
+        const response = await fetch(`http://localhost:3000/cards?_start=${start}&_end=${end}`);
         return await response.json();
     }
 

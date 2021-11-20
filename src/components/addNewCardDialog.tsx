@@ -14,7 +14,7 @@ import { MyCardProps } from './Main';
 import { api } from './Api';
 
 
-export default function FormDialog({ cards, setCards }: { cards: (MyCardProps[] | null), setCards: React.Dispatch<React.SetStateAction<MyCardProps[] | null>> }) {
+export default function FormDialog({ cards, setCards,callback }: { cards: (MyCardProps[] | null), setCards: React.Dispatch<React.SetStateAction<MyCardProps[] | null>>, callback: ()=>void }) {
     const [open, setOpen] = useState(false);
 
     // For editing
@@ -35,12 +35,13 @@ export default function FormDialog({ cards, setCards }: { cards: (MyCardProps[] 
 
     const handleClose = () => {
         console.log(newID())
+        callback();
         setOpen(false);
     };
 
     async function submitData() {
         await api.addItem(newID(), imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
-        const data = await api.getCards();
+        const data = await api.getCards(0, 5);
         setCards(data);
         handleClose();
     };
@@ -48,7 +49,7 @@ export default function FormDialog({ cards, setCards }: { cards: (MyCardProps[] 
 
     return (
         <div>
-            <Button sx={{ margin: '1vw' }} variant="contained" onClick={handleClickOpen}>
+            <Button sx={{ marginX: '1vw' }} variant="contained" onClick={handleClickOpen}>
                 New Card
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>

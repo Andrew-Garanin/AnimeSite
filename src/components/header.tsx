@@ -66,10 +66,10 @@ export const Head = ({cards, setCards}:{cards: (MyCardProps[] | null),setCards:R
 
       </Search>
 
-      <FormDialog  // New card button is here!
+      {/* <FormDialog  // New card button is here!
       cards={cards}
       setCards={setCards}
-      />
+      /> */}
     </header>
   );
 }
