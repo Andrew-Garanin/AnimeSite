@@ -74,7 +74,7 @@ html {
   
   .section::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+    background-image: linear-gradient(180deg, #e17af3 0%, #9baaff 99%);
     box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
   }
 
@@ -89,6 +89,6 @@ html {
   
   html::-webkit-scrollbar-thumb {
     border-radius: 100px;
-    background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+    background-image: linear-gradient(180deg, #e17af3 0%, #9baaff 99%);
     box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
   }
