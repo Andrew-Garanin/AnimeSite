@@ -6,13 +6,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
-import { IconButton } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useState } from 'react';
 
 
-export const AlertDialog = ({deleteButtonDisplay, onClick}:{deleteButtonDisplay: {display:string}, onClick: () => void}) => {
+export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisplay: { display: string }, onClick: () => void }) => {
   const [open, setOpen] = React.useState(false);
 
+  const color2 = "#fbc2eb";
+  const color1 = "#a6c1ee";
+  const color3 = "#e17afe";
+  const color4 = "#9baaff";
+
+  const [deleteDialogButtonColor, setDeleteDialogButtonColor] = useState({ background: `linear-gradient(to top,  ${color3} ,${color4})` });
+  const [cancelDialogButtonColor, setCancelDialogButtonColor] = useState({ background: `linear-gradient(to top,  ${color3} ,${color4})` });
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -23,6 +31,7 @@ export const AlertDialog = ({deleteButtonDisplay, onClick}:{deleteButtonDisplay:
 
   return (
     <Box>
+
       <IconButton
         aria-label="delete"
         style={deleteButtonDisplay}
@@ -35,21 +44,46 @@ export const AlertDialog = ({deleteButtonDisplay, onClick}:{deleteButtonDisplay:
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
-          
-        <DialogTitle id="alert-dialog-title">
-          {"Delete this card?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            If you delete this card, you will lose it forever🥺
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={onClick} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
+        <Grid container
+          display='flex'
+          direction='column'
+          style={{ background: `linear-gradient(to bottom,  ${color1} ,${color2})` }}>
+          <DialogTitle id="alert-dialog-title">
+            {"Delete this card?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              If you delete this card, you will lose it forever🥺
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              className='deleteDialogButton'
+              onClick={handleClose}
+              style={{ color: 'white', background: cancelDialogButtonColor.background }}
+              onMouseEnter={e => {
+                setCancelDialogButtonColor({ background: `linear-gradient(to top,  ${color4} ,${color3})` });
+              }}
+              onMouseLeave={e => {
+                setCancelDialogButtonColor({ background: `linear-gradient(to top,  ${color3} ,${color4})` })
+              }}
+            >Cancel
+            </Button>
+            <Button
+              className='deleteDialogButton'
+              onClick={onClick}
+              autoFocus
+              style={{ color: 'white', background: deleteDialogButtonColor.background }}
+              onMouseEnter={e => {
+                setDeleteDialogButtonColor({ background: `linear-gradient(to top,  ${color4} ,${color3})` });
+              }}
+              onMouseLeave={e => {
+                setDeleteDialogButtonColor({ background: `linear-gradient(to top,  ${color3} ,${color4})` })
+              }}>
+              Delete
+            </Button>
+          </DialogActions>
+        </Grid>
       </Dialog>
     </Box>
   );
