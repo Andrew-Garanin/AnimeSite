@@ -78,8 +78,6 @@ const MoreDialog = (props: MoreDialogProps) => {
     saveAs(imageReferenceCurrentValue, "image.jpg");
   };
 
-  
-
   return (
     <Dialog
       fullWidth

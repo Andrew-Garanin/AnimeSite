@@ -6,10 +6,11 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
 import { MoreButtonDialog } from "./dialog";
 import { AlertDialog } from './deleteItemConfirmation';
-import { MyCardProps } from './Main';
+import { MyCardProps } from './Body';
+
 
 export const MyCard = (props: MyCardProps) => {
-  const { id, image_reference, title, text, src_reference, onClick, getCards } = props;
+  const { id, image_reference, title, text, src_reference, onClickDeleteButton, getCards } = props;
 
   const color2 = "#fbc2eb";
   const color1 = "#a6c1ee";
@@ -69,9 +70,9 @@ export const MyCard = (props: MyCardProps) => {
                 {title}
               </Typography>
               <Box>
-                <AlertDialog //Delete button is here!
+                <AlertDialog // Delete button is here!
                   deleteButtonDisplay={deleteButtonDisplay}
-                  onClick={onClick} />
+                  onClick={onClickDeleteButton} />
               </Box>
             </Grid>
 

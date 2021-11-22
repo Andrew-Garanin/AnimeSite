@@ -2,11 +2,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import logo from "../assets/site-icon.png"
-import FormDialog from './addNewCardDialog';
-import { MyCardProps } from './Main';
 
 
-export const Head = ({cards, setCards}:{cards: (MyCardProps[] | null),setCards:React.Dispatch<React.SetStateAction<MyCardProps[] | null>>}) => {
+export const Head = () => {
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -66,10 +64,6 @@ export const Head = ({cards, setCards}:{cards: (MyCardProps[] | null),setCards:R
 
       </Search>
 
-      {/* <FormDialog  // New card button is here!
-      cards={cards}
-      setCards={setCards}
-      /> */}
     </header>
   );
 }

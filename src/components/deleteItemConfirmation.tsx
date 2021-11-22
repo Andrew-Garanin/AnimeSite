@@ -21,6 +21,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
 
   const [deleteDialogButtonColor, setDeleteDialogButtonColor] = useState({ background: `linear-gradient(to top,  ${color3} ,${color4})` });
   const [cancelDialogButtonColor, setCancelDialogButtonColor] = useState({ background: `linear-gradient(to top,  ${color3} ,${color4})` });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -31,7 +32,6 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
 
   return (
     <Box>
-
       <IconButton
         aria-label="delete"
         style={deleteButtonDisplay}
@@ -39,26 +39,30 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
         onClick={handleClickOpen}>
         <DeleteForeverIcon />
       </IconButton>
+
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
+
         <Grid container
           display='flex'
           direction='column'
           style={{ background: `linear-gradient(to bottom,  ${color1} ,${color2})` }}>
+
           <DialogTitle id="alert-dialog-title">
             {"Delete this card?"}
           </DialogTitle>
+
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               If you delete this card, you will lose it forever🥺
             </DialogContentText>
           </DialogContent>
+
           <DialogActions>
             <Button
-              className='deleteDialogButton'
               onClick={handleClose}
               style={{ color: 'white', background: cancelDialogButtonColor.background }}
               onMouseEnter={e => {
@@ -70,7 +74,6 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
             >Cancel
             </Button>
             <Button
-              className='deleteDialogButton'
               onClick={onClick}
               autoFocus
               style={{ color: 'white', background: deleteDialogButtonColor.background }}
@@ -83,6 +86,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
               Delete
             </Button>
           </DialogActions>
+
         </Grid>
       </Dialog>
     </Box>

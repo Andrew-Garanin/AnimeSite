@@ -1,11 +1,22 @@
-import { Button, Grid, Pagination } from '@mui/material';
+import { Grid, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
-import FormDialog from './addNewCardDialog';
 import { api } from './Api';
-import { MyCard } from "./card";
-import { MyCardProps } from './Main';
+import { MyCard } from "./MyCard";
+import NewCardDialog from './NewCardDialog';
 
-export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCards: React.Dispatch<React.SetStateAction<MyCardProps[] | null>> }) => {
+
+export interface MyCardProps {
+  id: number;
+  image_reference: string;
+  title: string;
+  text: string;
+  src_reference: string;
+  onClickDeleteButton: () => void;
+  getCards: () => void;
+}
+
+export const Body = () => {
+  const [cards, setCards] = useState<MyCardProps[] | null>(null);
   const [maxCardsOnPage, setMaxCardOnPage] = useState(12);
   const [maxPageNumber, setMaxPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,28 +31,18 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
     setCurrentPage(value);
   };
 
-  useEffect(() => {
-    const updatePageContent = async () => {
-      await getCards();
-    }
-    console.log(10 % 6)
-    updatePageContent();
-  }, [currentPage]);
-
   async function getCards() {
     var data;
     if (currentPage === 1) {
-      data = await api.getCards(0, currentPage * maxCardsOnPage)
+      data = await api.getCards(0, currentPage * maxCardsOnPage);
     }
     else {
-      data = await api.getCards(maxCardsOnPage * (currentPage - 1), currentPage * maxCardsOnPage)
+      data = await api.getCards(maxCardsOnPage * (currentPage - 1), currentPage * maxCardsOnPage);
     }
-    console.log(data)
-    setCards(data)
+    setCards(data);
   }
 
-  async function addCardCallBack() {
-    console.log("added!");
+  async function newCardCallBack() {
     await getCardsNumber();
     getCards();
   }
@@ -50,13 +51,18 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
     await api.removeItem(id);
     const num = await getCardsNumber();
 
-    if (currentPage === maxPageNumber) {
-      if (num % maxCardsOnPage === 0)
+    if (currentPage === maxPageNumber && num % maxCardsOnPage === 0) {
         setCurrentPage(currentPage - 1);
     }
-
     await getCards();
   };
+
+  useEffect(() => {
+    const updatePageContent = async () => {
+      await getCards();
+    }
+    updatePageContent();
+  }, [currentPage]);
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -67,7 +73,7 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
   }, []);
 
 
-  const Cards = () => {
+  const CardList = () => {
     return (
       <Grid container spacing={2}>
         {cards!.map((card, i) => (
@@ -78,7 +84,7 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
               title={card.title}
               text={card.text}
               src_reference={card.src_reference}
-              onClick={() => handleRemoveItem(card.id)}
+              onClickDeleteButton={() => handleRemoveItem(card.id)}
               getCards={getCards}
             />
           </Grid>
@@ -97,16 +103,13 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
       px={2}>
 
       <Grid item md={8} xs={12}>
-        {cards && <Cards />}
+        {cards && <CardList />}
       </Grid>
 
       <Grid container md={2} xs={4}>
         <Grid item md={8} xs={12}>
-          <FormDialog  // New card button is here!
-            cards={cards}
-            setCards={setCards}
-            callback={addCardCallBack}
-          />
+          <NewCardDialog  // New card button is here!
+            callback={newCardCallBack}/>
         </Grid>
       </Grid>
 
@@ -116,7 +119,6 @@ export const Body = ({ cards, setCards }: { cards: (MyCardProps[] | null), setCa
         paddingTop={2}>
         <Pagination count={maxPageNumber} color="secondary" onChange={handleChangeCurrentPage} page={currentPage} />
       </Grid>
-
     </Grid>
   );
 }
