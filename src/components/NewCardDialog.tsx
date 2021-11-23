@@ -86,7 +86,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                     <Grid item width='90%'>
                                         <TextField
                                             color="secondary"
-                                            autoFocus
                                             margin="dense"
                                             label="Source link"
                                             fullWidth
@@ -111,7 +110,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                     <Grid item width='90%'>
                                         <TextField
                                             color="secondary"
-                                            autoFocus
                                             margin="dense"
                                             label="Title"
                                             fullWidth
@@ -136,7 +134,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                     <Grid item width='90%'>
                                         <TextField
                                             color="secondary"
-                                            autoFocus
                                             margin="dense"
                                             label="Description"
                                             fullWidth
@@ -161,7 +158,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                     <Grid item width='90%'>
                                         <TextField
                                             color="secondary"
-                                            autoFocus
                                             margin="dense"
                                             label="Image link"
                                             fullWidth

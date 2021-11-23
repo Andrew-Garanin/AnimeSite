@@ -11,8 +11,6 @@ export const theme = createTheme({
     typography: {
       fontFamily: [
         'SF UI Display',
-        '-apple-system',
-        'BlinkMacSystemFont',
         '"Segoe UI"',
         'Roboto',
         '"Helvetica Neue"',

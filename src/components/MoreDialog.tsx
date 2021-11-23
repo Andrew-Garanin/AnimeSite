@@ -33,7 +33,7 @@ export interface MoreDialogProps {
 const MoreDialog = (props: MoreDialogProps) => {
   const { open, image_reference, title, text, src_reference, onClose, id } = props;
   const [mode, setMode] = useState("view")
-
+  const color5 = "#d900ff";
   // Refs
   const srcReferenceContentRef = useRef<HTMLInputElement>(null)
   const titleContentRef = useRef<HTMLInputElement>(null)
@@ -133,7 +133,7 @@ const MoreDialog = (props: MoreDialogProps) => {
                 <Grid item>
                   <Grid container direction='column'>
 
-                    <Grid item>
+                    <Grid item color={color5}>
                       <LinkIcon />
                     </Grid>
 
@@ -153,22 +153,23 @@ const MoreDialog = (props: MoreDialogProps) => {
                         direction="row"
                         justifyContent='end'
                         paddingY="2vh"
-                        spacing='0vw'>
+                        //spacing={1}
+                        alignContent='center'>
 
-                        <Grid item>
-                          <FacebookIcon onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
+                        <Grid item color='#0052D4'>
+                          <FacebookIcon sx={{fontSize: '32px', cursor: 'pointer'}} onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
+                        </Grid>
+
+                        <Grid item >
+                            <WhatsAppIcon sx={{backgroundColor: '#0f9b0f', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
                         </Grid>
 
                         <Grid item>
-                          <WhatsAppIcon onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
+                          <TelegramIcon sx={{backgroundColor: '#2193b0', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
                         </Grid>
 
-                        <Grid item>
-                          <TelegramIcon onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
-                        </Grid>
-
-                        <Grid item>
-                          <TwitterIcon onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
+                        <Grid item >
+                          <TwitterIcon sx={{backgroundColor: 'white', color: '#2193b0', cursor: 'pointer', borderRadius: '4px', marginTop: '4px' }} onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
                         </Grid>
 
                       </Grid>
@@ -181,12 +182,12 @@ const MoreDialog = (props: MoreDialogProps) => {
                   <Grid container
                     direction='column'>
 
-                    <Grid item>
+                    <Grid item color={color5}>
                       <PushPinIcon />
                     </Grid>
 
                     <Grid item>
-                      <Typography variant="body2" className="main_card_text">
+                      <Typography variant="body2">
                         {titleCurrentValue}
                       </Typography>
                       {mode === 'edit' && <TextField ref={titleContentRef} label="Helper text" multiline rows={3} InputProps={{
@@ -201,9 +202,12 @@ const MoreDialog = (props: MoreDialogProps) => {
                   </Grid>
                 </Grid>
 
-                <Grid item>
+                <Grid item color={color5}>
                   <AutoStoriesIcon />
-                  <Typography>
+                </Grid>
+
+                <Grid item>
+                  <Typography >
                     {textCurrentValue}
                   </Typography>
                   {mode === 'edit' && <TextField ref={textContentRef} label="Helper text" multiline rows={3} InputProps={{
@@ -215,7 +219,7 @@ const MoreDialog = (props: MoreDialogProps) => {
                   }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={textCurrentValue} onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}></TextField>}
                 </Grid>
 
-                <Grid item>
+                <Grid item color={color5}>
                   {mode === 'edit' && <AddAPhotoIcon />}
                   {mode === 'edit' && <TextField ref={imageReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
                     startAdornment: (
