@@ -92,3 +92,10 @@ html {
     background-image: linear-gradient(180deg, #e17af3 0%, #9baaff 99%);
     box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
   }
+
+  @font-face {
+    font-family: "SF UI Display";
+    src: local("SFUIDisplay"),
+      url("./assets/fonts/SFUIDisplay.woff") format("woff");
+    font-weight: normal;
+  }

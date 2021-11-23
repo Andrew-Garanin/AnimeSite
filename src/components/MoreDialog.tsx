@@ -19,6 +19,7 @@ import { useState, useRef } from 'react';
 import { api } from './Api';
 import { saveAs } from 'file-saver'
 
+
 export interface MoreDialogProps {
   open: boolean;
   image_reference: string;
@@ -113,8 +114,20 @@ const MoreDialog = (props: MoreDialogProps) => {
                 wrap="nowrap">
 
                 <Grid item>
-                  <Button variant="contained" onClick={() => { download() }}><DownloadIcon /> Save image...</Button>
-                  <Button onClick={editButton} variant="contained"><ModeEditOutlineIcon /> Edit mode...</Button>
+                  <Button
+                    style={{ marginRight: 10 }}
+                    sx={{ color: 'white' }}
+                    variant="contained"
+                    onClick={() => { download() }}>
+                    <DownloadIcon /> Save image...
+                  </Button>
+
+                  <Button
+                    sx={{ color: 'white' }}
+                    onClick={editButton}
+                    variant="contained">
+                    <ModeEditOutlineIcon /> Edit mode...
+                  </Button>
                 </Grid>
 
                 <Grid item>

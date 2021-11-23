@@ -1,10 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, CardMedia, Chip, Grid } from '@mui/material';
+import { Box, CardMedia, Chip, Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { useState } from 'react';
-import { MoreButtonDialog } from "./dialog";
+import { MoreButtonDialog } from "./MoreDialog";
 import { AlertDialog } from './deleteItemConfirmation';
 import { MyCardProps } from './Body';
 
@@ -42,14 +42,13 @@ export const MyCard = (props: MyCardProps) => {
           <CardContent
             sx={{ height: '100%' }}
             style={{ padding: 0 }}>
-            <CardActionArea>
-              <CardMedia
-                className="preview_image"
-                component="img"
-                image={image_reference}
-                alt="Anime picture"
-              />
-            </CardActionArea>
+            <CardMedia
+              className="preview_image"
+              component="img"
+              image={image_reference}
+              alt="Anime picture"
+            />
+
           </CardContent>
         </Grid>
 
@@ -91,7 +90,7 @@ export const MyCard = (props: MyCardProps) => {
                 text={text}
                 src_reference={src_reference}
                 getCards={getCards} />
-            </Grid> 
+            </Grid>
 
           </Grid>
         </Grid>

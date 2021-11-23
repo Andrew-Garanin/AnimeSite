@@ -2,7 +2,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import logo from "../assets/site-icon.png"
-
+import Typography from '@mui/material/Typography';
 
 export const Head = () => {
 
@@ -51,7 +51,7 @@ export const Head = () => {
   return (
     <header className="header">
       <img className="header_icon" src={logo} alt="header_icon" />
-      <h1 className="header_title">Anime Girls</h1>
+      <Typography variant='h4' className="header_title">Anime Girls</Typography>
       <Search className="search" >
 
         <SearchIconWrapper>

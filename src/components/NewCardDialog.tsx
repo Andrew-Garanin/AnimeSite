@@ -54,7 +54,10 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
 
     return (
         <Box>
-            <Button sx={{ marginX: '1vw' }} variant="contained" onClick={handleClickOpen}>
+            <Button sx={{ marginX: '1vw', color: 'white' }}
+                variant="contained"
+                onClick={handleClickOpen}
+                color='primary'>
                 New Card
             </Button>
 
