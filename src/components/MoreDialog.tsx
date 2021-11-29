@@ -18,6 +18,8 @@ import DoneIcon from '@mui/icons-material/Done';
 import { useState, useRef } from 'react';
 import { api } from './Api';
 import { saveAs } from 'file-saver'
+import CloseIcon from '@mui/icons-material/Close';
+import { validateTitle, validateURL } from './Validation';
 
 
 export interface MoreDialogProps {
@@ -30,8 +32,19 @@ export interface MoreDialogProps {
   id: number;
 }
 
-const MoreDialog = (props: MoreDialogProps) => {
-  const { open, image_reference, title, text, src_reference, onClose, id } = props;
+export interface SimpleDialogDemoProps {
+  image_reference: string;
+  title: string;
+  text: string;
+  src_reference: string;
+  id: number;
+  getCards: () => void;
+}
+
+export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
+  const { image_reference, title, text, src_reference, id, getCards } = props;
+  const [open, setOpen] = React.useState(false);
+
   const [mode, setMode] = useState("view")
   const color5 = "#d900ff";
   // Refs
@@ -52,19 +65,53 @@ const MoreDialog = (props: MoreDialogProps) => {
   const [textCurrentValue, setTextCurrentValue] = useState(text)
   const [imageReferenceCurrentValue, setImageReferenceCurrentValue] = useState(image_reference)
 
+  // For validation
+  const [errorTitleMessage, setErrorTitleMessage] = useState("");
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorImageMessage, setErrorImageMessage] = useState("");
+  const [errorImage, setErrorImage] = useState(false);
+
   async function handleUpdateItem(id: number) {
-    const data = await api.updateItem(id, srcReferenceEditingValue, titleEditingValue, textEditingValue, imageReferenceEditingValue)
-    setSrcReferenceCurrentValue(data.src_reference);
-    setTitleCurrentValue(data.title);
-    setTextCurrentValue(data.text);
-    setImageReferenceCurrentValue(data.image_reference);
+    var error = false;
+    if (!validateTitle(titleEditingValue)) {
+      setErrorTitle(true);
+      setErrorTitleMessage("title is empty");
+      error = true;
+    }
+    else {
+      setErrorTitle(false);
+      setErrorTitleMessage("");
+    }
+    console.log(validateURL(imageReferenceEditingValue))
+    if (!validateURL(imageReferenceEditingValue)) {
+      setErrorImage(true);
+      setErrorImageMessage("image link is wrong");
+      error = true;
+    }
+    else {
+      setErrorImage(false);
+      setErrorImageMessage("");
+    }
+    if (!error) {
+      const data = await api.updateItem(id, srcReferenceEditingValue, titleEditingValue, textEditingValue, imageReferenceEditingValue)
+      setSrcReferenceCurrentValue(data.src_reference);
+      setTitleCurrentValue(data.title);
+      setTextCurrentValue(data.text);
+      setImageReferenceCurrentValue(data.image_reference);
+      setMode("view")
+    }
   }
 
   const editButton = () => {
-    if (mode === 'view')
-      setMode("edit")
-    else
-      setMode('view')
+    setMode("edit")
+  }
+
+  const canselEditModeButton = () => {
+    setMode('view')
+    setErrorTitle(false);
+    setErrorTitleMessage("");
+    setErrorImage(false);
+    setErrorImageMessage("");
   }
 
   const saveButton = () => {
@@ -79,190 +126,12 @@ const MoreDialog = (props: MoreDialogProps) => {
     saveAs(imageReferenceCurrentValue, "image.jpg");
   };
 
-  return (
-    <Dialog
-      fullWidth
-      onClose={onClose}
-      open={open}
-      maxWidth="md">
-
-      <Grid container
-        className="dialog"
-        direction="row"
-        flexWrap="nowrap">
-
-        <Grid item md={6} xs={8}>
-          <DialogContent style={{ height: '80vh', padding: 0 }}>
-            <CardMedia
-              className="prev_image"
-              component="img"
-              height='100%'
-              image={imageReferenceCurrentValue}
-              alt="Anime picture" />
-          </DialogContent>
-        </Grid>
-
-        <Grid item md={6} xs={8}>
-          <DialogContent style={{ height: '80vh', padding: 0 }}>
-            <Box overflow='auto' height="100%" className='section'>
-              <Grid container
-                direction='column'
-                px={1}
-                spacing={3}
-                height="100%"
-                padding='1vw'
-                wrap="nowrap">
-
-                <Grid item>
-                  <Button
-                    style={{ marginRight: 10 }}
-                    sx={{ color: 'white' }}
-                    variant="contained"
-                    onClick={() => { download() }}>
-                    <DownloadIcon /> Save image...
-                  </Button>
-
-                  <Button
-                    sx={{ color: 'white' }}
-                    onClick={editButton}
-                    variant="contained">
-                    <ModeEditOutlineIcon /> Edit mode...
-                  </Button>
-                </Grid>
-
-                <Grid item>
-                  <Grid container direction='column'>
-
-                    <Grid item color={color5}>
-                      <LinkIcon />
-                    </Grid>
-
-                    <Grid item>
-                      <a href={srcReferenceCurrentValue}>{shortReference}</a>
-                      {mode === 'edit' && <TextField ref={srcReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <ModeEditOutlineIcon />
-                          </InputAdornment>
-                        ),
-                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={srcReferenceCurrentValue} onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}></TextField>}
-                    </Grid>
-
-                    <Grid item>
-                      <Grid container
-                        direction="row"
-                        justifyContent='end'
-                        paddingY="2vh"
-                        //spacing={1}
-                        alignContent='center'>
-
-                        <Grid item color='#0052D4'>
-                          <FacebookIcon sx={{fontSize: '32px', cursor: 'pointer'}} onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
-                        </Grid>
-
-                        <Grid item >
-                            <WhatsAppIcon sx={{backgroundColor: '#0f9b0f', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
-                        </Grid>
-
-                        <Grid item>
-                          <TelegramIcon sx={{backgroundColor: '#2193b0', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
-                        </Grid>
-
-                        <Grid item >
-                          <TwitterIcon sx={{backgroundColor: 'white', color: '#2193b0', cursor: 'pointer', borderRadius: '4px', marginTop: '4px' }} onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
-                        </Grid>
-
-                      </Grid>
-                    </Grid>
-
-                  </Grid>
-                </Grid>
-
-                <Grid item>
-                  <Grid container
-                    direction='column'>
-
-                    <Grid item color={color5}>
-                      <PushPinIcon />
-                    </Grid>
-
-                    <Grid item>
-                      <Typography variant="body2">
-                        {titleCurrentValue}
-                      </Typography>
-                      {mode === 'edit' && <TextField ref={titleContentRef} label="Helper text" multiline rows={3} InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <ModeEditOutlineIcon />
-                          </InputAdornment>
-                        ),
-                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={titleCurrentValue} onChange={(value) => { setTitleEditingValue(value.currentTarget.value) }}></TextField>}
-                    </Grid>
-
-                  </Grid>
-                </Grid>
-
-                <Grid item color={color5}>
-                  <AutoStoriesIcon />
-                </Grid>
-
-                <Grid item>
-                  <Typography >
-                    {textCurrentValue}
-                  </Typography>
-                  {mode === 'edit' && <TextField ref={textContentRef} label="Helper text" multiline rows={3} InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ModeEditOutlineIcon />
-                      </InputAdornment>
-                    ),
-                  }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={textCurrentValue} onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}></TextField>}
-                </Grid>
-
-                <Grid item color={color5}>
-                  {mode === 'edit' && <AddAPhotoIcon />}
-                  {mode === 'edit' && <TextField ref={imageReferenceContentRef} label="Helper text" multiline rows={3} InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ModeEditOutlineIcon />
-                      </InputAdornment>
-                    ),
-                  }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={imageReferenceCurrentValue} onChange={(value) => { setImageReferenceEditingValue(value.currentTarget.value) }}></TextField>}
-                </Grid>
-
-                {mode === 'edit' && <Grid item>
-                  <Button color='success' onClick={saveButton} variant="contained"><DoneIcon />Save</Button>
-                </Grid>}
-
-
-              </Grid>
-            </Box>
-          </DialogContent>
-        </Grid>
-      </Grid >
-    </Dialog >
-  );
-}
-
-export interface SimpleDialogDemoProps {
-  image_reference: string;
-  title: string;
-  text: string;
-  src_reference: string;
-  id: number;
-  getCards: () => void;
-}
-
-export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
-  const { image_reference, title, text, src_reference, id, getCards } = props;
-  const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    getCards()
+    getCards();
     setOpen(false);
   };
 
@@ -277,14 +146,186 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
         More
       </Button>
 
-      <MoreDialog
-        open={open}
+      <Dialog
+        fullWidth
         onClose={handleClose}
-        id={id}
-        image_reference={image_reference}
-        title={title}
-        text={text}
-        src_reference={src_reference} />
+        open={open}
+        maxWidth="md">
+
+        <Grid container
+          className="dialog"
+          direction="row"
+          flexWrap="nowrap">
+
+          <Grid item md={6} xs={8}>
+            <DialogContent style={{ height: '80vh', padding: 0 }}>
+              <CardMedia
+                className="prev_image"
+                component="img"
+                height='100%'
+                image={imageReferenceCurrentValue}
+                alt="Anime picture" />
+            </DialogContent>
+          </Grid>
+
+          <Grid item md={6} xs={8}>
+            <DialogContent style={{ height: '80vh', padding: 0 }}>
+              <Box overflow='auto' height="100%" className='section'>
+                <Grid container
+                  direction='column'
+                  px={1}
+                  spacing={3}
+                  height="100%"
+                  padding='1vw'
+                  wrap="nowrap">
+
+                  <Grid item>
+                    <Button
+                      style={{ marginRight: 10 }}
+                      sx={{ color: 'white' }}
+                      variant="contained"
+                      onClick={() => { download() }}>
+                      <DownloadIcon /> Save image...
+                    </Button>
+
+                    {mode === 'view' && <Button
+                      sx={{ color: 'white' }}
+                      onClick={editButton}
+                      variant="contained">
+                      <ModeEditOutlineIcon /> Edit mode...
+                    </Button>}
+                  </Grid>
+
+                  <Grid item>
+                    <Grid container direction='column'>
+
+                      <Grid item color={color5}>
+                        <LinkIcon />
+                      </Grid>
+
+                      <Grid item>
+                        <a href={srcReferenceCurrentValue}>{shortReference}</a>
+                        {mode === 'edit' && <TextField ref={srcReferenceContentRef} label="Source link" multiline rows={3} InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <ModeEditOutlineIcon />
+                            </InputAdornment>
+                          ),
+                        }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={srcReferenceCurrentValue} onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}></TextField>}
+                      </Grid>
+
+                      <Grid item>
+                        <Grid container
+                          direction="row"
+                          justifyContent='end'
+                          paddingY="2vh"
+                          alignContent='center'>
+
+                          <Grid item color='#0052D4'>
+                            <FacebookIcon sx={{ fontSize: '32px', cursor: 'pointer' }} onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
+                          </Grid>
+
+                          <Grid item >
+                            <WhatsAppIcon sx={{ backgroundColor: '#0f9b0f', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
+                          </Grid>
+
+                          <Grid item>
+                            <TelegramIcon sx={{ backgroundColor: '#2193b0', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
+                          </Grid>
+
+                          <Grid item >
+                            <TwitterIcon sx={{ backgroundColor: 'white', color: '#2193b0', cursor: 'pointer', borderRadius: '4px', marginTop: '4px' }} onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
+                          </Grid>
+
+                        </Grid>
+                      </Grid>
+
+                    </Grid>
+                  </Grid>
+
+                  <Grid item>
+                    <Grid container
+                      direction='column'>
+
+                      <Grid item color={color5}>
+                        <PushPinIcon />
+                      </Grid>
+
+                      <Grid item>
+                        <Typography variant="body2">
+                          {titleCurrentValue}
+                        </Typography>
+                        {mode === 'edit' && <TextField error={errorTitle}
+                          helperText={errorTitleMessage} ref={titleContentRef} label="Title" multiline rows={3} InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <ModeEditOutlineIcon />
+                              </InputAdornment>
+                            ),
+                          }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={titleCurrentValue} onChange={(value) => { setTitleEditingValue(value.currentTarget.value) }}></TextField>}
+                      </Grid>
+
+                    </Grid>
+                  </Grid>
+
+                  <Grid item color={color5}>
+                    <AutoStoriesIcon />
+                  </Grid>
+
+                  <Grid item>
+                    <Typography >
+                      {textCurrentValue}
+                    </Typography>
+                    {mode === 'edit' && <TextField ref={textContentRef} label="Description" multiline rows={3} InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ModeEditOutlineIcon />
+                        </InputAdornment>
+                      ),
+                    }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={textCurrentValue} onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}></TextField>}
+                  </Grid>
+
+                  <Grid item color={color5}>
+                    {mode === 'edit' && <AddAPhotoIcon />}
+                    {mode === 'edit' && <TextField error={errorImage}
+                      helperText={errorImageMessage} ref={imageReferenceContentRef} label="Image link" multiline rows={3} InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <ModeEditOutlineIcon />
+                          </InputAdornment>
+                        ),
+                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={imageReferenceCurrentValue} onChange={(value) => { setImageReferenceEditingValue(value.currentTarget.value) }}></TextField>}
+                  </Grid>
+
+                  {mode === 'edit' && <Grid item>
+                    <Grid container
+                      direction='row'
+                      spacing={2}>
+
+                      <Grid item>
+                        <Button
+                          style={{ marginBottom: 10 }}
+                          color='success'
+                          onClick={saveButton}
+                          variant="contained"><DoneIcon />Save</Button>
+                      </Grid>
+
+                      <Grid item>
+                        <Button
+                          style={{ marginBottom: 10 }}
+                          color='secondary'
+                          onClick={canselEditModeButton}
+                          variant="contained"><CloseIcon />Cansel</Button>
+                      </Grid>
+
+                    </Grid>
+                  </Grid>}
+                </Grid>
+              </Box>
+            </DialogContent>
+          </Grid>
+        </Grid >
+      </Dialog >
     </Box>
   );
 }

@@ -11,6 +11,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Box, Grid } from '@mui/material';
 import { useState } from 'react';
 import { api } from './Api';
+import { validateTitle, validateURL } from './Validation';
 
 
 export default function NewCardDialog({ callback }: { callback: () => void }) {
@@ -30,6 +31,12 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
     const [textEditingValue, setTextEditingValue] = useState('')
     const [imageReferenceEditingValue, setImageReferenceEditingValue] = useState('')
 
+    // For validation
+    const [errorTitleMessage, setErrorTitleMessage] = useState("");
+    const [errorTitle, setErrorTitle] = useState(false);
+    const [errorImageMessage, setErrorImageMessage] = useState("");
+    const [errorImage, setErrorImage] = useState(false);
+
     async function newID() {
         return await api.getLastID() + 1;
     }
@@ -44,12 +51,41 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
         setTitleEditingValue('');
         setTextEditingValue('');
         setImageReferenceEditingValue('');
+
+        setErrorTitle(false);
+        setErrorTitleMessage("");
+        setErrorImage(false);
+        setErrorImageMessage("");
+
         setOpen(false);
     };
 
     async function submitData() {
-        await api.addItem(await newID(), imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
-        handleClose();
+        var error = false;
+        if (!validateTitle(titleEditingValue)) {
+            setErrorTitle(true);
+            setErrorTitleMessage("title is empty");
+            error = true;
+        }
+        else{
+            setErrorTitle(false);
+            setErrorTitleMessage("");
+        }
+        console.log(validateURL(imageReferenceEditingValue))
+        if (!validateURL(imageReferenceEditingValue)) {
+            setErrorImage(true);
+            setErrorImageMessage("image link is wrong");
+            error = true;
+        }
+        else{
+            setErrorImage(false);
+            setErrorImageMessage("");
+        }
+        if (!error) {
+            await api.addItem(await newID(), imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
+            handleClose();
+        }
+
     };
 
     return (
@@ -109,6 +145,8 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
 
                                     <Grid item width='90%'>
                                         <TextField
+                                            error={errorTitle}
+                                            helperText={errorTitleMessage}
                                             color="secondary"
                                             margin="dense"
                                             label="Title"
@@ -157,6 +195,8 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
 
                                     <Grid item width='90%'>
                                         <TextField
+                                            error={errorImage}
+                                            helperText={errorImageMessage}
                                             color="secondary"
                                             margin="dense"
                                             label="Image link"

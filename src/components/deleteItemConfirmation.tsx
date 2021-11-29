@@ -57,7 +57,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
 
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              If you delete this card, you will lose it forever🥺
+              If you delete this card you will lose it forever🥺
             </DialogContentText>
           </DialogContent>
 
