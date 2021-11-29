@@ -3,8 +3,13 @@ import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import logo from "../assets/site-icon.png"
 import Typography from '@mui/material/Typography';
+import { Grid, useMediaQuery } from '@mui/material';
+import { theme } from './Themes';
 
 export const Head = () => {
+  const isHD = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -49,21 +54,37 @@ export const Head = () => {
   }));
 
   return (
-    <header className="header">
-      <img className="header_icon" src={logo} alt="header_icon" />
-      <Typography variant='h4' className="header_title">Anime Girls</Typography>
-      <Search className="search" >
+    <header className="header" >
+      <Grid container justifyContent='center'>
+        <Grid item md={8} xs={12}>
+          <Grid container alignItems='center' direction={isHD ? 'row': 'column'} >
+            <Grid item>
+              <Grid container alignItems='center' spacing={2}>
+                <Grid item>
+                  <img className="header_icon" src={logo} alt="header_icon" />
+                </Grid>
+                <Grid item>
+                  <Typography variant='h4' className="header_title">Anime Girls</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
 
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
+            <Grid item marginBottom={isHD ? 0: 2}>
+              <Search className="search" >
 
-        <StyledInputBase
-          placeholder="Search…"
-          inputProps={{ 'aria-label': 'search' }} />
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
 
-      </Search>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }} />
 
+              </Search>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </header>
   );
 }
