@@ -1,8 +1,9 @@
-import { Grid, Pagination } from '@mui/material';
+import { Grid, Pagination, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { api } from './Api';
 import { MyCard } from "./MyCard";
 import NewCardDialog from './NewCardDialog';
+import { theme } from './Themes';
 
 
 export interface MyCardProps {
@@ -16,6 +17,10 @@ export interface MyCardProps {
 }
 
 export const Body = () => {
+  const isHD = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+
   const [cards, setCards] = useState<MyCardProps[] | null>(null);
   const [maxCardsOnPage, setMaxCardOnPage] = useState(12);
   const [maxPageNumber, setMaxPageNumber] = useState(1);
@@ -52,7 +57,7 @@ export const Body = () => {
     const num = await getCardsNumber();
 
     if (currentPage === maxPageNumber && num % maxCardsOnPage === 0) {
-        setCurrentPage(currentPage - 1);
+      setCurrentPage(currentPage - 1);
     }
     await getCards();
   };
@@ -72,6 +77,16 @@ export const Body = () => {
     fetchCards();
   }, []);
 
+  const NewCardButton = () => {
+    return (
+      <Grid container md={2} xs={4}>
+        <Grid item md={8} xs={12} marginBottom={isHD ? 0: 2}>
+          <NewCardDialog  // New card button is here!
+            callback={newCardCallBack} />
+        </Grid>
+      </Grid>
+    );
+  }
 
   const CardList = () => {
     return (
@@ -103,15 +118,11 @@ export const Body = () => {
       px={2}>
 
       <Grid item md={8} xs={12}>
+        {!isHD && <NewCardButton />}
         {cards && <CardList />}
       </Grid>
 
-      <Grid container md={2} xs={4}>
-        <Grid item md={8} xs={12}>
-          <NewCardDialog  // New card button is here!
-            callback={newCardCallBack}/>
-        </Grid>
-      </Grid>
+      {isHD && <NewCardButton />}
 
       <Grid item md={12} xs={12}
         display='flex'
