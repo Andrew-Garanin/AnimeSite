@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,10 +11,10 @@ import { useState } from 'react';
 
 
 export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisplay: { display: string }, onClick: () => void }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const color2 = "#fbc2eb";
   const color1 = "#a6c1ee";
+  const color2 = "#fbc2eb";
   const color3 = "#e17afe";
   const color4 = "#9baaff";
 
@@ -26,7 +25,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClickClose = () => {
     setOpen(false);
   };
 
@@ -42,7 +41,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
 
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleClickClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
 
@@ -63,7 +62,7 @@ export const AlertDialog = ({ deleteButtonDisplay, onClick }: { deleteButtonDisp
 
           <DialogActions>
             <Button
-              onClick={handleClose}
+              onClick={handleClickClose}
               style={{ color: 'white', background: cancelDialogButtonColor.background }}
               onMouseEnter={e => {
                 setCancelDialogButtonColor({ background: `linear-gradient(to top,  ${color4} ,${color3})` });

@@ -43,15 +43,17 @@ export interface SimpleDialogDemoProps {
 }
 
 export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
+  const { image_reference, title, text, src_reference, id, getCards } = props;
+
   const isHD = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
 
-  const { image_reference, title, text, src_reference, id, getCards } = props;
   const [open, setOpen] = React.useState(false);
-
   const [mode, setMode] = useState("view")
-  const color5 = "#d900ff";
+
+  const color = "#d900ff";
+
   // Refs
   const srcReferenceContentRef = useRef<HTMLInputElement>(null)
   const titleContentRef = useRef<HTMLInputElement>(null)
@@ -87,7 +89,6 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
       setErrorTitle(false);
       setErrorTitleMessage("");
     }
-    console.log(validateURL(imageReferenceEditingValue))
     if (!validateURL(imageReferenceEditingValue)) {
       setErrorImage(true);
       setErrorImageMessage("image link is wrong");
@@ -103,16 +104,16 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
       setTitleCurrentValue(data.title);
       setTextCurrentValue(data.text);
       setImageReferenceCurrentValue(data.image_reference);
-      setMode("view")
+      setMode("view");
     }
   }
 
   const editButton = () => {
-    setMode("edit")
+    setMode("edit");
   }
 
   const canselEditModeButton = () => {
-    setMode('view')
+    setMode('view');
     setErrorTitle(false);
     setErrorTitleMessage("");
     setErrorImage(false);
@@ -120,11 +121,10 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
   }
 
   const saveButton = () => {
-    handleUpdateItem(id)
+    handleUpdateItem(id);
   }
 
-  const shortReference = srcReferenceCurrentValue.substring(8, srcReferenceCurrentValue.indexOf("/", 8))
-
+  const shortReference = srcReferenceCurrentValue.substring(8, srcReferenceCurrentValue.indexOf("/", 8));
 
   const download = () => {
     // Func for download image.
@@ -135,7 +135,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClickClose = () => {
     getCards();
     setOpen(false);
   };
@@ -153,7 +153,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
 
       <Dialog
         fullWidth
-        onClose={handleClose}
+        onClose={handleClickClose}
         open={open}
         maxWidth="md">
 
@@ -178,7 +178,6 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
               <Box overflow='auto' height="100%" className='section'>
                 <Grid container
                   direction='column'
-
                   spacing={3}
                   height="100%"
                   padding={isHD ? '1vw' : '2.5vw'}
@@ -204,7 +203,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                   <Grid item>
                     <Grid container direction='column'>
 
-                      <Grid item color={color5}>
+                      <Grid item color={color}>
                         <LinkIcon />
                       </Grid>
 
@@ -216,7 +215,13 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                               <ModeEditOutlineIcon />
                             </InputAdornment>
                           ),
-                        }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={srcReferenceCurrentValue} onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}></TextField>}
+                        }}
+                          size='small'
+                          sx={{ width: '100%', marginTop: '2vh' }}
+                          type='text'
+                          defaultValue={srcReferenceCurrentValue}
+                          onChange={(value) => { setSrcReferenceEditingValue(value.currentTarget.value) }}>
+                        </TextField>}
                       </Grid>
 
                       <Grid item>
@@ -227,19 +232,27 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                           alignContent='center'>
 
                           <Grid item color='#0052D4'>
-                            <FacebookIcon sx={{ fontSize: '32px', cursor: 'pointer' }} onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
+                            <FacebookIcon
+                              sx={{ fontSize: '32px', cursor: 'pointer' }}
+                              onClick={() => window.open(`http://www.facebook.com/sharer.php? u=${srcReferenceCurrentValue}`, "_blank")} />
                           </Grid>
 
                           <Grid item >
-                            <WhatsAppIcon sx={{ backgroundColor: '#0f9b0f', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
+                            <WhatsAppIcon
+                              sx={{ backgroundColor: '#0f9b0f', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }}
+                              onClick={() => window.open(`https://web.whatsapp.com/send?text=${srcReferenceCurrentValue}`, "_blank")} />
                           </Grid>
 
                           <Grid item>
-                            <TelegramIcon sx={{ backgroundColor: '#2193b0', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }} onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
+                            <TelegramIcon
+                              sx={{ backgroundColor: '#2193b0', color: 'white', cursor: 'pointer', borderRadius: '4px', marginTop: '4px', marginRight: '4px' }}
+                              onClick={() => window.open(`https://t.me/share/url?url=${srcReferenceCurrentValue}`, "_blank")} />
                           </Grid>
 
                           <Grid item >
-                            <TwitterIcon sx={{ backgroundColor: 'white', color: '#2193b0', cursor: 'pointer', borderRadius: '4px', marginTop: '4px' }} onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
+                            <TwitterIcon
+                              sx={{ backgroundColor: 'white', color: '#2193b0', cursor: 'pointer', borderRadius: '4px', marginTop: '4px' }}
+                              onClick={() => window.open(`https://twitter.com/intent/tweet?url=${srcReferenceCurrentValue}`, "_blank")} />
                           </Grid>
 
                         </Grid>
@@ -252,7 +265,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                     <Grid container
                       direction='column'>
 
-                      <Grid item color={color5}>
+                      <Grid item color={color}>
                         <PushPinIcon />
                       </Grid>
 
@@ -267,13 +280,19 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                                 <ModeEditOutlineIcon />
                               </InputAdornment>
                             ),
-                          }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={titleCurrentValue} onChange={(value) => { setTitleEditingValue(value.currentTarget.value) }}></TextField>}
+                          }}
+                          size='small'
+                          sx={{ width: '100%', marginTop: '2vh' }}
+                          type='text'
+                          defaultValue={titleCurrentValue}
+                          onChange={(value) => { setTitleEditingValue(value.currentTarget.value) }}>
+                        </TextField>}
                       </Grid>
 
                     </Grid>
                   </Grid>
 
-                  <Grid item color={color5}>
+                  <Grid item color={color}>
                     <AutoStoriesIcon />
                   </Grid>
 
@@ -287,10 +306,15 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                           <ModeEditOutlineIcon />
                         </InputAdornment>
                       ),
-                    }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={textCurrentValue} onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}></TextField>}
+                    }}
+                      size='small'
+                      sx={{ width: '100%', marginTop: '2vh' }}
+                      type='text' defaultValue={textCurrentValue}
+                      onChange={(value) => { setTextEditingValue(value.currentTarget.value) }}>
+                    </TextField>}
                   </Grid>
 
-                  <Grid item color={color5}>
+                  <Grid item color={color}>
                     {mode === 'edit' && <AddAPhotoIcon />}
                     {mode === 'edit' && <TextField error={errorImage}
                       helperText={errorImageMessage} ref={imageReferenceContentRef} label="Image link" multiline rows={3} InputProps={{
@@ -299,7 +323,13 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                             <ModeEditOutlineIcon />
                           </InputAdornment>
                         ),
-                      }} size='small' sx={{ width: '100%', marginTop: '2vh' }} type='text' defaultValue={imageReferenceCurrentValue} onChange={(value) => { setImageReferenceEditingValue(value.currentTarget.value) }}></TextField>}
+                      }}
+                      size='small'
+                      sx={{ width: '100%', marginTop: '2vh' }}
+                      type='text'
+                      defaultValue={imageReferenceCurrentValue}
+                      onChange={(value) => { setImageReferenceEditingValue(value.currentTarget.value) }}>
+                    </TextField>}
                   </Grid>
 
                   {mode === 'edit' && <Grid item>
@@ -329,8 +359,8 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
               </Box>
             </DialogContent>
           </Grid>
-        </Grid >
-      </Dialog >
+        </Grid>
+      </Dialog>
     </Box>
   );
 }

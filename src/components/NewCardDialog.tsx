@@ -50,7 +50,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClickClose = () => {
         callback();
         setSrcReferenceEditingValue('');
         setTitleEditingValue('');
@@ -76,7 +76,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
             setErrorTitle(false);
             setErrorTitleMessage("");
         }
-        console.log(validateURL(imageReferenceEditingValue))
         if (!validateURL(imageReferenceEditingValue)) {
             setErrorImage(true);
             setErrorImageMessage("image link is wrong");
@@ -88,9 +87,8 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
         }
         if (!error) {
             await api.addItem(await newID(), imageReferenceEditingValue, titleEditingValue, textEditingValue, srcReferenceEditingValue);
-            handleClose();
+            handleClickClose();
         }
-
     };
 
     return (
@@ -104,7 +102,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
 
             <Dialog fullWidth
                 open={open}
-                onClose={handleClose}>
+                onClose={handleClickClose}>
 
                 <Grid container
                     display='flex'
@@ -216,7 +214,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}
+                        <Button onClick={handleClickClose}
                             style={{ color: 'white', background: cancelDialogButtonColor.background }}
                             onMouseEnter={e => {
                                 setCancelDialogButtonColor({ background: `linear-gradient(to top,  ${color4} ,${color3})` });
@@ -237,7 +235,6 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                             }}>
                             Submit
                         </Button>
-
                     </DialogActions>
                 </Grid>
             </Dialog>

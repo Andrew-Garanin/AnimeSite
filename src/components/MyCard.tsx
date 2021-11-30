@@ -63,7 +63,6 @@ export const MyCard = (props: MyCardProps) => {
 
             <Grid item
               display="flex"
-              direction='row'
               justifyContent='space-between'>
               <Typography className="main_card_text" height="5rem" variant="body2" paddingTop="14px" paddingLeft="14px" paddingRight="14px" >
                 {title}

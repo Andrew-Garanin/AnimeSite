@@ -22,6 +22,7 @@ export const Body = () => {
   });
 
   const [cards, setCards] = useState<MyCardProps[] | null>(null);
+  // eslint-disable-next-line
   const [maxCardsOnPage, setMaxCardOnPage] = useState(12);
   const [maxPageNumber, setMaxPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,6 +68,7 @@ export const Body = () => {
       await getCards();
     }
     updatePageContent();
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
@@ -75,12 +77,13 @@ export const Body = () => {
       await getCards();
     }
     fetchCards();
+    // eslint-disable-next-line
   }, []);
 
   const NewCardButton = () => {
     return (
       <Grid container md={2} xs={4}>
-        <Grid item md={8} xs={12} marginBottom={isHD ? 0: 2}>
+        <Grid item md={8} xs={12} marginBottom={isHD ? 0 : 2}>
           <NewCardDialog  // New card button is here!
             callback={newCardCallBack} />
         </Grid>
@@ -128,7 +131,11 @@ export const Body = () => {
         display='flex'
         justifyContent='center'
         paddingTop={2}>
-        <Pagination count={maxPageNumber} color="secondary" onChange={handleChangeCurrentPage} page={currentPage} />
+        <Pagination
+          count={maxPageNumber}
+          color="secondary"
+          onChange={handleChangeCurrentPage}
+          page={currentPage} />
       </Grid>
     </Grid>
   );
