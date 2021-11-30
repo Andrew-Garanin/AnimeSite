@@ -8,13 +8,18 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import LinkIcon from '@mui/icons-material/Link';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { api } from './Api';
 import { validateTitle, validateURL } from './Validation';
+import { theme } from './Themes';
 
 
 export default function NewCardDialog({ callback }: { callback: () => void }) {
+    const isHD = useMediaQuery(theme.breakpoints.up('md'), {
+        defaultMatches: true,
+    });
+
     const color1 = "#a6c1ee";
     const color2 = "#fbc2eb";
     const color3 = "#e17afe";
@@ -67,7 +72,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
             setErrorTitleMessage("title is empty");
             error = true;
         }
-        else{
+        else {
             setErrorTitle(false);
             setErrorTitleMessage("");
         }
@@ -77,7 +82,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
             setErrorImageMessage("image link is wrong");
             error = true;
         }
-        else{
+        else {
             setErrorImage(false);
             setErrorImageMessage("");
         }
@@ -119,7 +124,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                         <LinkIcon />
                                     </Grid>
 
-                                    <Grid item width='90%'>
+                                    <Grid item width={isHD ? '90%' : '80%'}>
                                         <TextField
                                             color="secondary"
                                             margin="dense"
@@ -143,7 +148,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                         <PushPinIcon />
                                     </Grid>
 
-                                    <Grid item width='90%'>
+                                    <Grid item width={isHD ? '90%' : '80%'}>
                                         <TextField
                                             error={errorTitle}
                                             helperText={errorTitleMessage}
@@ -169,7 +174,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                         <AutoStoriesIcon />
                                     </Grid>
 
-                                    <Grid item width='90%'>
+                                    <Grid item width={isHD ? '90%' : '80%'}>
                                         <TextField
                                             color="secondary"
                                             margin="dense"
@@ -193,7 +198,7 @@ export default function NewCardDialog({ callback }: { callback: () => void }) {
                                         <AddAPhotoIcon />
                                     </Grid>
 
-                                    <Grid item width='90%'>
+                                    <Grid item width={isHD ? '90%' : '80%'}>
                                         <TextField
                                             error={errorImage}
                                             helperText={errorImageMessage}

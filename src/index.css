@@ -64,9 +64,15 @@ html {
 }
 
   .section::-webkit-scrollbar {
-    width: 20px;
+    width: 15px;
   }
-  
+
+  @media (max-width: 380px) {
+    .section::-webkit-scrollbar {
+      width: 7px;
+    }
+  }
+
   .section::-webkit-scrollbar-track {
     background-color: #e4e4e4;
     border-radius: 100px;
@@ -79,7 +85,7 @@ html {
   }
 
   html::-webkit-scrollbar {
-    width: 20px;
+    width: 15px;
   }
   
   html::-webkit-scrollbar-track {

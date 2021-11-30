@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
-import { CardMedia, DialogContent, Grid, InputAdornment, TextField } from '@mui/material';
+import { CardMedia, DialogContent, Grid, InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -20,6 +20,7 @@ import { api } from './Api';
 import { saveAs } from 'file-saver'
 import CloseIcon from '@mui/icons-material/Close';
 import { validateTitle, validateURL } from './Validation';
+import { theme } from './Themes';
 
 
 export interface MoreDialogProps {
@@ -42,6 +43,10 @@ export interface SimpleDialogDemoProps {
 }
 
 export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
+  const isHD = useMediaQuery(theme.breakpoints.up('md'), {
+    defaultMatches: true,
+  });
+
   const { image_reference, title, text, src_reference, id, getCards } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -154,7 +159,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
 
         <Grid container
           className="dialog"
-          direction="row"
+          direction={isHD ? "row" : "column"}
           flexWrap="nowrap">
 
           <Grid item md={6} xs={8}>
@@ -173,15 +178,15 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
               <Box overflow='auto' height="100%" className='section'>
                 <Grid container
                   direction='column'
-                  px={1}
+
                   spacing={3}
                   height="100%"
-                  padding='1vw'
+                  padding={isHD ? '1vw' : '2.5vw'}
                   wrap="nowrap">
 
-                  <Grid item>
+                  <Grid item display={isHD ? 'false' : 'flex'} justifyContent={isHD ? 'false' : 'space-between'}>
                     <Button
-                      style={{ marginRight: 10 }}
+                      style={{ marginRight: 15 }}
                       sx={{ color: 'white' }}
                       variant="contained"
                       onClick={() => { download() }}>
@@ -192,7 +197,7 @@ export const MoreButtonDialog = (props: SimpleDialogDemoProps) => {
                       sx={{ color: 'white' }}
                       onClick={editButton}
                       variant="contained">
-                      <ModeEditOutlineIcon /> Edit mode...
+                      <ModeEditOutlineIcon /> Edit mode
                     </Button>}
                   </Grid>
 
